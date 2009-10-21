@@ -13,6 +13,7 @@
 		B8188390108EB78A00749A6D /* GNToggleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B818838E108EB78A00749A6D /* GNToggleBar.m */; };
 		B81883B4108EBAB300749A6D /* GNToggleItem.h in Headers */ = {isa = PBXBuildFile; fileRef = B81883B2108EBAB300749A6D /* GNToggleItem.h */; };
 		B81883B5108EBAB300749A6D /* GNToggleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B81883B3108EBAB300749A6D /* GNToggleItem.m */; };
+		B8188408108EC63A00749A6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8188407108EC63A00749A6D /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		B818838E108EB78A00749A6D /* GNToggleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GNToggleBar.m; sourceTree = "<group>"; };
 		B81883B2108EBAB300749A6D /* GNToggleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNToggleItem.h; sourceTree = "<group>"; };
 		B81883B3108EBAB300749A6D /* GNToggleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GNToggleItem.m; sourceTree = "<group>"; };
+		B8188407108EC63A00749A6D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libGNToggleBar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGNToggleBar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -31,6 +33,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
+				B8188408108EC63A00749A6D /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
+				B8188407108EC63A00749A6D /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

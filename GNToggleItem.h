@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class GNToggleBar;
 
-@interface GNToggleItem : NSObject {
+@interface GNToggleItem : UIButton {
 	NSString *_title;
 	NSString *_icon;
 	GNToggleBar *_toggleBar;

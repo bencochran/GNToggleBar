@@ -14,7 +14,6 @@
 @synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems,
 			delegate=_delegate;
 
-
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         // Initialization code

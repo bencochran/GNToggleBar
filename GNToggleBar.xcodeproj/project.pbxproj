@@ -11,6 +11,8 @@
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		B818838F108EB78A00749A6D /* GNToggleBar.h in Headers */ = {isa = PBXBuildFile; fileRef = B818838D108EB78A00749A6D /* GNToggleBar.h */; };
 		B8188390108EB78A00749A6D /* GNToggleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B818838E108EB78A00749A6D /* GNToggleBar.m */; };
+		B81883B4108EBAB300749A6D /* GNToggleItem.h in Headers */ = {isa = PBXBuildFile; fileRef = B81883B2108EBAB300749A6D /* GNToggleItem.h */; };
+		B81883B5108EBAB300749A6D /* GNToggleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B81883B3108EBAB300749A6D /* GNToggleItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +20,8 @@
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B818838D108EB78A00749A6D /* GNToggleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNToggleBar.h; sourceTree = "<group>"; };
 		B818838E108EB78A00749A6D /* GNToggleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GNToggleBar.m; sourceTree = "<group>"; };
+		B81883B2108EBAB300749A6D /* GNToggleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNToggleItem.h; sourceTree = "<group>"; };
+		B81883B3108EBAB300749A6D /* GNToggleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GNToggleItem.m; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libGNToggleBar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGNToggleBar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -63,6 +67,8 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B81883B2108EBAB300749A6D /* GNToggleItem.h */,
+				B81883B3108EBAB300749A6D /* GNToggleItem.m */,
 				B818838D108EB78A00749A6D /* GNToggleBar.h */,
 				B818838E108EB78A00749A6D /* GNToggleBar.m */,
 			);
@@ -86,6 +92,7 @@
 			files = (
 				AA747D9F0F9514B9006C5449 /* GNToggleBar_Prefix.pch in Headers */,
 				B818838F108EB78A00749A6D /* GNToggleBar.h in Headers */,
+				B81883B4108EBAB300749A6D /* GNToggleItem.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8188390108EB78A00749A6D /* GNToggleBar.m in Sources */,
+				B81883B5108EBAB300749A6D /* GNToggleItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

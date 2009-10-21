@@ -13,7 +13,27 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		B8E73A63108ED98C000E8CA9 /* libGNToggleBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E73A4C108ED8E3000E8CA9 /* libGNToggleBar.a */; };
+		B8E73A97108EE3A5000E8CA9 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E73A95108EE3A5000E8CA9 /* TestViewController.m */; };
+		B8E73A98108EE3A5000E8CA9 /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8E73A96108EE3A5000E8CA9 /* TestView.xib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B8E73A4B108ED8E3000E8CA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8E73A46108ED8E3000E8CA9 /* GNToggleBar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = GNToggleBar;
+		};
+		B8E73A61108ED96E000E8CA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8E73A46108ED8E3000E8CA9 /* GNToggleBar.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = GNToggleBar;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -26,6 +46,10 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ToggleBarDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToggleBarDemo_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ToggleBarDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ToggleBarDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B8E73A46108ED8E3000E8CA9 /* GNToggleBar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GNToggleBar.xcodeproj; path = /Users/bencochran/Comps/GNToggleBar/src/GNToggleBar.xcodeproj; sourceTree = "<absolute>"; };
+		B8E73A94108EE3A5000E8CA9 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		B8E73A95108EE3A5000E8CA9 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		B8E73A96108EE3A5000E8CA9 /* TestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TestView.xib; path = Classes/TestView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8E73A63108ED98C000E8CA9 /* libGNToggleBar.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -47,6 +72,8 @@
 			children = (
 				1D3623240D0F684500981E51 /* ToggleBarDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ToggleBarDemoAppDelegate.m */,
+				B8E73A94108EE3A5000E8CA9 /* TestViewController.h */,
+				B8E73A95108EE3A5000E8CA9 /* TestViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -83,6 +110,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B8E73A96108EE3A5000E8CA9 /* TestView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* ToggleBarDemo-Info.plist */,
 			);
@@ -95,8 +123,17 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				B8E73A46108ED8E3000E8CA9 /* GNToggleBar.xcodeproj */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B8E73A47108ED8E3000E8CA9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B8E73A4C108ED8E3000E8CA9 /* libGNToggleBar.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -113,6 +150,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B8E73A62108ED96E000E8CA9 /* PBXTargetDependency */,
 			);
 			name = ToggleBarDemo;
 			productName = ToggleBarDemo;
@@ -129,6 +167,12 @@
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B8E73A47108ED8E3000E8CA9 /* Products */;
+					ProjectRef = B8E73A46108ED8E3000E8CA9 /* GNToggleBar.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* ToggleBarDemo */,
@@ -136,12 +180,23 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		B8E73A4C108ED8E3000E8CA9 /* libGNToggleBar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGNToggleBar.a;
+			remoteRef = B8E73A4B108ED8E3000E8CA9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
+				B8E73A98108EE3A5000E8CA9 /* TestView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,23 +209,40 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ToggleBarDemoAppDelegate.m in Sources */,
+				B8E73A97108EE3A5000E8CA9 /* TestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B8E73A62108ED96E000E8CA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GNToggleBar;
+			targetProxy = B8E73A61108ED96E000E8CA9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ToggleBarDemo_Prefix.pch;
+				HEADER_SEARCH_PATHS = ../src;
 				INFOPLIST_FILE = "ToggleBarDemo-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = ToggleBarDemo;
+				SDKROOT = iphonesimulator3.0;
 			};
 			name = Debug;
 		};

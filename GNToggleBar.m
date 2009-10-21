@@ -3,7 +3,7 @@
 //  GNToggleBar
 //
 //  Created by Ben Cochran on 10/20/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Ben Cochran. All rights reserved.
 //
 
 #import "GNToggleBar.h"
@@ -11,7 +11,8 @@
 
 @implementation GNToggleBar
 
-@synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems;
+@synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems,
+			delegate=_delegate;
 
 
 - (id)initWithFrame:(CGRect)frame {

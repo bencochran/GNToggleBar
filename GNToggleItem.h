@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class GNToggleBar;
+
 @interface GNToggleItem : NSObject {
 	NSString *_title;
 	NSString *_icon;
+	GNToggleBar *_toggleBar;
 }
 
 @property (nonatomic, copy) NSString *title;

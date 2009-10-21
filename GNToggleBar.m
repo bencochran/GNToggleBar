@@ -29,6 +29,9 @@
 
 
 - (void)dealloc {
+	[_toggleItems release];
+	[_quickToggleItems release];
+	
     [super dealloc];
 }
 

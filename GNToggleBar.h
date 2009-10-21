@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GNToggleItem.h"
+
+@class GNToggleItem;
 
 @protocol GNToggleBarDelegate;
 

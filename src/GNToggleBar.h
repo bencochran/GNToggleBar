@@ -12,6 +12,9 @@
 
 @protocol GNToggleBarDelegate;
 
+extern const CGFloat kGNToggleBarWidth;
+extern const CGFloat kGNToggleBarHeight;
+
 @interface GNToggleBar : UIView {
 	id<GNToggleBarDelegate> *_delegate;
 	NSArray *_toggleItems;

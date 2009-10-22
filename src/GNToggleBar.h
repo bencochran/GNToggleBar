@@ -16,11 +16,20 @@
 	id<GNToggleBarDelegate> *_delegate;
 	NSArray *_toggleItems;
 	NSArray *_quickToggleItems;
+	NSMutableArray *_activeToggleItems;
+	
+//	UIImageView *_toggleBarBackgroundImage;
 }
 
 @property (nonatomic, assign) id<GNToggleBarDelegate> *delegate;
 @property (nonatomic, retain) NSArray *toggleItems;
 @property (nonatomic, retain) NSArray *quickToggleItems;
+@property (nonatomic, readonly) NSArray *activeToggleItems;
+//@property (nonatomic, retain) UIImageView
+
+- (id)initWithFrame:(CGRect)frame;
+
+- (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(bool)active;
 
 @end
 

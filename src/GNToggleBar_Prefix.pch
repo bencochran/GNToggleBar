@@ -4,6 +4,5 @@
 
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
-	#import "GNToggleItem.h"
-	#import "GNToggleBar.h"
+	#import "GnarusToggleBar.h"
 #endif

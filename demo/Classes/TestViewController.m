@@ -7,6 +7,7 @@
 //
 
 #import "TestViewController.h"
+#import <GnarusToggleBar/GnarusToggleBar.h>
 
 
 @implementation TestViewController
@@ -21,20 +22,31 @@
 }
 */
 
-/*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	imageView.image = [UIImage imageNamed:@"bg.jpg"];
+	
+	GNToggleBar *toggleBar = [[GNToggleBar alloc] initWithFrame:self.view.bounds];
+	[self.view addSubview:toggleBar];
+	[toggleBar release];
 }
-*/
 
-/*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
-*/
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[[UIApplication sharedApplication] setStatusBarHidden:YES animated:YES];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
+	[self.view layoutSubviews];
+}
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.

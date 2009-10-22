@@ -10,7 +10,7 @@
 
 
 @interface TestViewController : UIViewController {
-
+	IBOutlet UIImageView *imageView;
 }
 
 @end

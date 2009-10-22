@@ -16,6 +16,7 @@
 		B8E73A63108ED98C000E8CA9 /* libGNToggleBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E73A4C108ED8E3000E8CA9 /* libGNToggleBar.a */; };
 		B8E73A97108EE3A5000E8CA9 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E73A95108EE3A5000E8CA9 /* TestViewController.m */; };
 		B8E73A98108EE3A5000E8CA9 /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8E73A96108EE3A5000E8CA9 /* TestView.xib */; };
+		B8F89FA0108FEB7B00C1A13C /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B8F89F9F108FEB7B00C1A13C /* bg.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		B8E73A94108EE3A5000E8CA9 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		B8E73A95108EE3A5000E8CA9 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		B8E73A96108EE3A5000E8CA9 /* TestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TestView.xib; path = Classes/TestView.xib; sourceTree = "<group>"; };
+		B8F89F9F108FEB7B00C1A13C /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B8F89F9F108FEB7B00C1A13C /* bg.jpg */,
 				B8E73A96108EE3A5000E8CA9 /* TestView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* ToggleBarDemo-Info.plist */,
@@ -197,6 +200,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				B8E73A98108EE3A5000E8CA9 /* TestView.xib in Resources */,
+				B8F89FA0108FEB7B00C1A13C /* bg.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

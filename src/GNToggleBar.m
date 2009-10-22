@@ -51,7 +51,7 @@
 	}
 }
 
-- (void)drawToggleBarWithBounds:(CGRect)barBounds inFrame:(CGRect)barFrame {
+- (void)drawToggleBarWithBounds:(CGRect)barBounds inFrame:(CGRect)barFrame arrowUp:(BOOL)arrowUp {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGFloat alignStroke;
 	CGMutablePathRef path;
@@ -74,6 +74,7 @@
 	CGContextClipToRect(context,barBounds);
 	CGContextSetAlpha(context, 0.8);
 	
+	// Bar
 	
 	alignStroke = 0.0;
 	path = CGPathCreateMutable();
@@ -162,6 +163,42 @@
 	CGContextRestoreGState(context);
 	CGPathRelease(path);
 	
+	// Arrow
+	
+	alignStroke = 0.0;
+	path = CGPathCreateMutable();
+	
+	if (arrowUp) {
+		point = CGPointMake((barBounds.size.width/2.0), 4.5);
+		CGPathMoveToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((barBounds.size.width/2.0) - 3.0, 9.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((barBounds.size.width/2.0) + 3.0, 9.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((barBounds.size.width/2.0), 4.5);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+	} else {
+		point = CGPointMake((barBounds.size.width/2.0), 9.0);
+		CGPathMoveToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((barBounds.size.width/2.0) - 3.0, 4.5);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((barBounds.size.width/2.0) + 3.0, 4.5);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((barBounds.size.width/2.0), 9.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+	}
+	
+	CGPathCloseSubpath(path);
+
+	CGContextSetShadow(context,CGSizeMake(1.0, -1.0), 1.0);	
+
+	color = [UIColor colorWithRed:0.79 green:0.79 blue:0.79 alpha:1.0];
+	[color setFill];
+	CGContextAddPath(context, path);
+	CGContextFillPath(context);	
+	
+	CGPathRelease(path);
+	
 	// Oh, I'm bad.
 	//NSLog(@"Unregistered Copy of Opacity");
 	
@@ -174,7 +211,7 @@
     // Drawing code
 	CGRect toggleBarBounds = CGRectMake(0, 0, self.bounds.size.width, 57);
 	CGRect toggleBarFrame = CGRectMake(self.bounds.origin.x, self.bounds.size.height - 57, self.bounds.size.width, 57);
-	[self drawToggleBarWithBounds:toggleBarBounds inFrame:toggleBarFrame];
+	[self drawToggleBarWithBounds:toggleBarBounds inFrame:toggleBarFrame arrowUp:YES];
 }
 
 - (void)layoutSubviews {

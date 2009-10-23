@@ -11,7 +11,8 @@
 @implementation GNToggleBar
 
 @synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems,
-			delegate=_delegate, activeToggleItems=_activeToggleItems;
+			delegate=_delegate, activeToggleItems=_activeToggleItems,
+			arrow=_arrow;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -22,6 +23,11 @@
 		self.backgroundColor = [UIColor clearColor];
 		self.contentMode = UIViewContentModeBottom;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.arrow = [[[GNToggleArrow alloc] init] autorelease];
+		[self.arrow setPointingUp:YES];
+		[self addSubview:self.arrow];
+		NSLog(@"arrow: %@",self.arrow);
+		//[self.arrow set
     }
     return self;
 }
@@ -43,7 +49,7 @@
 	[self setNeedsLayout];
 }
 
-- (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(bool)active {
+- (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(BOOL)active {
 	if (active && [_activeToggleItems indexOfObject:toggleItem] != NSNotFound) {
 		[_activeToggleItems addObject:toggleItem];
 	} else if (!active) {
@@ -162,43 +168,7 @@
 	CGContextStrokePath(context);
 	CGContextRestoreGState(context);
 	CGPathRelease(path);
-	
-	// Arrow
-	
-	alignStroke = 0.0;
-	path = CGPathCreateMutable();
-	
-	if (arrowUp) {
-		point = CGPointMake((barBounds.size.width/2.0), 4.5);
-		CGPathMoveToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((barBounds.size.width/2.0) - 3.0, 9.0);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((barBounds.size.width/2.0) + 3.0, 9.0);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((barBounds.size.width/2.0), 4.5);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	} else {
-		point = CGPointMake((barBounds.size.width/2.0), 9.0);
-		CGPathMoveToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((barBounds.size.width/2.0) - 3.0, 4.5);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((barBounds.size.width/2.0) + 3.0, 4.5);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((barBounds.size.width/2.0), 9.0);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	}
-	
-	CGPathCloseSubpath(path);
-
-	CGContextSetShadow(context,CGSizeMake(1.0, -1.0), 1.0);	
-
-	color = [UIColor colorWithRed:0.79 green:0.79 blue:0.79 alpha:1.0];
-	[color setFill];
-	CGContextAddPath(context, path);
-	CGContextFillPath(context);	
-	
-	CGPathRelease(path);
-	
+		
 	// Oh, I'm bad.
 	//NSLog(@"Unregistered Copy of Opacity");
 	
@@ -215,8 +185,105 @@
 }
 
 - (void)layoutSubviews {
+	//CGRect arrowFrame = CGRectMake((self.bounds.size.width / 2.0) - 3.0, 4.5, 6.0, 5.5);
+	CGRect arrowFrame = CGRectMake(self.frame.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
+	self.arrow.frame = arrowFrame;
 	[self setNeedsDisplay];
 	[super layoutSubviews];
+}
+
+@end
+
+
+////////////////////////////////////////////////////////////
+
+@implementation GNToggleArrow
+
+@synthesize pointingUp=_pointingUp;
+
++ (GNToggleArrow *) arrowPointingUp:(BOOL)pointingUp {
+	GNToggleArrow *arrow = [[[GNToggleArrow alloc] init] autorelease];
+	[arrow setPointingUp:pointingUp];
+	//CGRect bounds = CGRectMake(0, 0, 6, 5.5);
+	//arrow.bounds = bounds;
+	return arrow;
+}
+
+- (id) init {
+	if (self = [super init]) {
+		self.backgroundColor = [UIColor clearColor];
+		self.pointingUp = YES;
+	}
+	return self;
+}
+
+- (void) setPointingUp:(BOOL)pointingUp {
+	_pointingUp = pointingUp;
+	[self setNeedsDisplay];
+}
+
+- (void) drawRect:(CGRect)rect {
+
+	NSLog(@"button frame:%@", NSStringFromCGRect(self.frame));
+	NSLog(@"button boundz:%@", NSStringFromCGRect(self.bounds));
+	
+//	[[UIColor cyanColor] set];
+//	UIRectFill(self.bounds);
+//	
+//	[[UIColor redColor] set];
+//	UIRectFill(self.frame);
+	
+	
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGFloat alignStroke;
+	CGMutablePathRef path;
+	CGPoint point;
+	UIColor *color;
+	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+	
+	CGContextSaveGState(context);
+	CGContextTranslateCTM(context, self.frame.origin.x, self.frame.origin.y);
+	CGContextClipToRect(context,self.bounds);
+	CGContextSetAlpha(context, 0.8);
+	
+	// Arrow
+	
+	alignStroke = 0.0;
+	path = CGPathCreateMutable();
+	
+	if (self.pointingUp) {
+		point = CGPointMake(self.bounds.size.width/2.0, 0.0);
+		CGPathMoveToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(0.0, self.bounds.size.height);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(self.bounds.size.width, self.bounds.size.height);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((self.bounds.size.width/2.0), 0.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+	} else {
+		point = CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height);
+		CGPathMoveToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(0.0, 0.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(self.bounds.size.width, 0.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((self.bounds.size.width/2.0), self.bounds.size.height);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+	}
+	
+	CGPathCloseSubpath(path);
+	
+	CGContextSetShadow(context,CGSizeMake(1.0, -1.0), 1.0);	
+	
+	color = [UIColor colorWithRed:0.79 green:0.79 blue:0.79 alpha:1.0];
+	[color setFill];
+	CGContextAddPath(context, path);
+	CGContextFillPath(context);	
+	
+	CGPathRelease(path);
+
+	CGContextRestoreGState(context);
+	CGColorSpaceRelease(space);
 }
 
 @end

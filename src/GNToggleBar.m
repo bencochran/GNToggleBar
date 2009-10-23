@@ -20,7 +20,7 @@
 		_quickToggleItems = nil;
 		_activeToggleItems = [[NSMutableArray alloc] init];
 		self.backgroundColor = [UIColor clearColor];
-		self.contentMode = UIViewContentModeBottom;
+		self.contentMode = UIViewContentModeRedraw;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
     return self;
@@ -212,11 +212,6 @@
 	CGRect toggleBarBounds = CGRectMake(0, 0, self.bounds.size.width, 57);
 	CGRect toggleBarFrame = CGRectMake(self.bounds.origin.x, self.bounds.size.height - 57, self.bounds.size.width, 57);
 	[self drawToggleBarWithBounds:toggleBarBounds inFrame:toggleBarFrame arrowUp:YES];
-}
-
-- (void)layoutSubviews {
-	[self setNeedsDisplay];
-	[super layoutSubviews];
 }
 
 @end

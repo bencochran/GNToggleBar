@@ -21,10 +21,6 @@
 		_quickToggleItems = nil;
 		_activeToggleItems = [[NSMutableArray alloc] init];
 		self.backgroundColor = [UIColor clearColor];
-<<<<<<< HEAD
-		self.contentMode = UIViewContentModeRedraw;
-=======
->>>>>>> views
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		//self.alpha = 0.8;
 		
@@ -369,8 +365,4 @@
 	CGColorSpaceRelease(space);
 }
 
-<<<<<<< HEAD
 @end
-=======
-@end
->>>>>>> views

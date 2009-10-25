@@ -80,10 +80,10 @@
 - (void)layoutSubviews {
 	//CGRect arrowFrame = CGRectMake((self.bounds.size.width / 2.0) - 3.0, 4.5, 6.0, 5.5);
 	//CGRect arrowFrame = CGRectMake(self.frame.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
-	CGRect arrowFrame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
+	CGRect arrowFrame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.origin.y + 4.5, 6.0, 5.5);
 	self.arrow.frame = arrowFrame;
 	
-	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.size.height - 57, self.bounds.size.width, 57);
+	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 57);
 	self.background.frame = backgroundFrame;
 	
 	[super layoutSubviews];
@@ -100,6 +100,15 @@
 	UITouch *touch = [touches anyObject];
 	if (touch.view == self.arrow) {
 		NSLog(@"touch moved: %@", touch);
+		CGPoint locationInSuperView = [touch locationInView:self.superview];
+		CGPoint location = [touch locationInView:self];
+		CGPoint previousLocation = [touch previousLocationInView:self];
+		
+		int diff = location.y - previousLocation.y;
+		
+		CGRect newFrame = CGRectMake(self.frame.origin.x, locationInSuperView.y, self.frame.size.width, self.frame.size.height - diff);
+		
+		self.frame = newFrame;
 	}
 }
 
@@ -137,6 +146,7 @@
 - (id) initWithFrame:(CGRect)frame {
 	if (self = [super initWithFrame:frame]) {
 		self.backgroundColor = [UIColor clearColor];
+		self.contentMode = UIViewContentModeTop;
 		self.pointingUp = YES;
 	}
 	return self;

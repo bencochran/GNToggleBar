@@ -27,8 +27,10 @@
     [super viewDidLoad];
 	
 	imageView.image = [UIImage imageNamed:@"bg.jpg"];
-	
-	GNToggleBar *toggleBar = [[GNToggleBar alloc] initWithFrame:self.view.bounds];
+
+	CGRect toggleBounds = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + self.view.bounds.size.height - 57, self.view.bounds.size.width, 57);
+
+	GNToggleBar *toggleBar = [[GNToggleBar alloc] initWithFrame:toggleBounds];
 	[self.view addSubview:toggleBar];
 	[toggleBar release];
 }

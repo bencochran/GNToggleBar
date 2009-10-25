@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class GNToggleItem, GNToggleArrow;
+@class GNToggleItem, GNToggleArrow, GNToggleBackground;
 
 @protocol GNToggleBarDelegate;
 
@@ -18,6 +18,7 @@
 	NSArray *_quickToggleItems;
 	NSMutableArray *_activeToggleItems;
 	GNToggleArrow *_arrow;
+	GNToggleBackground *_background;
 }
 
 @property (nonatomic, assign) id<GNToggleBarDelegate> *delegate;
@@ -25,6 +26,7 @@
 @property (nonatomic, retain) NSArray *quickToggleItems;
 @property (nonatomic, readonly) NSArray *activeToggleItems;
 @property (nonatomic, retain) GNToggleArrow *arrow;
+@property (nonatomic, retain) GNToggleBackground *background;
 
 - (id)initWithFrame:(CGRect)frame;
 
@@ -35,13 +37,21 @@
 
 ////////////////////////////////////////////////////////////
 
-@interface GNToggleArrow : UIControl {
+@interface GNToggleArrow : UIView {
 	BOOL _pointingUp;
 }
 
 @property (nonatomic) BOOL pointingUp;
 
-+ (GNToggleArrow *) arrowPointingUp:(BOOL)pointingUp;
++ (GNToggleArrow *) arrowPointingUp:(BOOL)pointingUp withFrame:(CGRect)frame;
+
+@end
+
+////////////////////////////////////////////////////////////
+
+@interface GNToggleBackground : UIView {
+
+}
 
 @end
 

@@ -12,7 +12,7 @@
 
 @synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems,
 			delegate=_delegate, activeToggleItems=_activeToggleItems,
-			arrow=_arrow;
+			arrow=_arrow, background=_background;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -21,9 +21,16 @@
 		_quickToggleItems = nil;
 		_activeToggleItems = [[NSMutableArray alloc] init];
 		self.backgroundColor = [UIColor clearColor];
-		self.contentMode = UIViewContentModeBottom;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		self.arrow = [[[GNToggleArrow alloc] init] autorelease];
+		//self.alpha = 0.8;
+		
+		CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.size.height - 57, self.bounds.size.width, 57);
+		self.background = [[[GNToggleBackground alloc] initWithFrame:backgroundFrame] autorelease];
+		[self addSubview:self.background];
+		NSLog(@"background: %@",self.background);
+		
+		CGRect arrowFrame = CGRectMake(self.frame.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
+		self.arrow = [[[GNToggleArrow alloc] initWithFrame:arrowFrame] autorelease];
 		[self.arrow setPointingUp:YES];
 		[self addSubview:self.arrow];
 		NSLog(@"arrow: %@",self.arrow);
@@ -36,6 +43,8 @@
 	[_toggleItems release];
 	[_quickToggleItems release];
 	[_activeToggleItems release];
+	[_arrow release];
+	[_background release];
 	
     [super dealloc];
 }
@@ -58,6 +67,186 @@
 }
 
 - (void)drawToggleBarWithBounds:(CGRect)barBounds inFrame:(CGRect)barFrame arrowUp:(BOOL)arrowUp {
+	
+}
+
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+	CGRect toggleBarBounds = CGRectMake(0, 0, self.bounds.size.width, 57);
+	CGRect toggleBarFrame = CGRectMake(self.bounds.origin.x, self.bounds.size.height - 57, self.bounds.size.width, 57);
+	[self drawToggleBarWithBounds:toggleBarBounds inFrame:toggleBarFrame arrowUp:YES];
+}
+
+- (void)layoutSubviews {
+	//CGRect arrowFrame = CGRectMake((self.bounds.size.width / 2.0) - 3.0, 4.5, 6.0, 5.5);
+	//CGRect arrowFrame = CGRectMake(self.frame.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
+	CGRect arrowFrame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
+	self.arrow.frame = arrowFrame;
+	
+	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.size.height - 57, self.bounds.size.width, 57);
+	self.background.frame = backgroundFrame;
+	
+	[super layoutSubviews];
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	UITouch *touch = [touches anyObject];
+	if (touch.view == self.arrow) {
+		NSLog(@"touch began: %@", touch);
+	}
+}
+
+- (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+	UITouch *touch = [touches anyObject];
+	if (touch.view == self.arrow) {
+		NSLog(@"touch moved: %@", touch);
+	}
+}
+
+
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+	UITouch *touch = [touches anyObject];
+	if (touch.view == self.arrow) {
+		NSLog(@"touch ended: %@", touch);
+	}
+}
+
+- (void) touchesCanceled:(NSSet *)touches withEvent:(UIEvent *)event {
+	UITouch *touch = [touches anyObject];
+	if (touch.view == self.arrow) {
+		NSLog(@"touch canceled: %@", touch);
+	}
+}
+
+
+@end
+
+
+////////////////////////////////////////////////////////////
+
+@implementation GNToggleArrow
+
+@synthesize pointingUp=_pointingUp;
+
++ (GNToggleArrow *) arrowPointingUp:(BOOL)pointingUp withFrame:(CGRect)frame {
+	GNToggleArrow *arrow = [[[GNToggleArrow alloc] initWithFrame:frame] autorelease];
+	[arrow setPointingUp:pointingUp];
+	return arrow;
+}
+
+- (id) initWithFrame:(CGRect)frame {
+	if (self = [super initWithFrame:frame]) {
+		self.backgroundColor = [UIColor clearColor];
+		self.pointingUp = YES;
+	}
+	return self;
+}
+
+- (void) setPointingUp:(BOOL)pointingUp {
+	_pointingUp = pointingUp;
+	[self setNeedsDisplay];
+}
+
+- (BOOL) pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	/*
+	 * We want the touchable area to be quite a bit larger than
+	 * the very small arrow itself, so let's test againsts something
+	 * larger than the bounds.
+	 */
+	CGRect touchable = CGRectMake(self.bounds.origin.x-15, self.bounds.origin.y-10, self.bounds.size.width+30, self.bounds.size.height+15);
+	return CGRectContainsPoint(touchable, point);
+}
+
+- (void) drawRect:(CGRect)rect {
+	NSLog(@"button frame:%@", NSStringFromCGRect(self.frame));
+	NSLog(@"button bounds:%@", NSStringFromCGRect(self.bounds));
+	
+//	[[UIColor blueColor] set];
+//	UIRectFill(self.bounds);
+//	
+//	[[UIColor redColor] set];
+//	UIRectFill(self.frame);
+	
+	
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGFloat alignStroke;
+	CGMutablePathRef path;
+	CGPoint point;
+	UIColor *color;
+	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+	
+	CGContextSaveGState(context);
+	//CGContextTranslateCTM(context, self.frame.origin.x, self.frame.origin.y);
+	//CGContextClipToRect(context,self.bounds);
+	//CGContextSetAlpha(context, 0.8);
+	
+	// Arrow
+	
+	alignStroke = 0.0;
+	path = CGPathCreateMutable();
+	
+	if (self.pointingUp) {
+		point = CGPointMake(self.bounds.size.width/2.0, 0.0);
+		CGPathMoveToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(0.0, self.bounds.size.height);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(self.bounds.size.width, self.bounds.size.height);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((self.bounds.size.width/2.0), 0.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+	} else {
+		point = CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height);
+		CGPathMoveToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(0.0, 0.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake(self.bounds.size.width, 0.0);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+		point = CGPointMake((self.bounds.size.width/2.0), self.bounds.size.height);
+		CGPathAddLineToPoint(path, NULL, point.x, point.y);
+	}
+	
+	CGPathCloseSubpath(path);
+	
+	CGContextSetShadow(context,CGSizeMake(1.0, -1.0), 1.0);	
+	
+	color = [UIColor colorWithRed:0.79 green:0.79 blue:0.79 alpha:1.0];
+	[color setFill];
+	CGContextAddPath(context, path);
+	CGContextFillPath(context);	
+	
+	CGPathRelease(path);
+
+	CGContextRestoreGState(context);
+	CGColorSpaceRelease(space);
+}
+
+@end
+
+////////////////////////////////////////////////////////////
+
+@implementation GNToggleBackground
+
+- (id) initWithFrame:(CGRect)frame {
+	if (self = [super initWithFrame:frame]) {
+		self.backgroundColor = [UIColor clearColor];
+		self.contentMode = UIViewContentModeRedraw;
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	}
+	return self;
+}
+
+- (void) drawRect:(CGRect)rect {
+	
+	NSLog(@"background frame:%@", NSStringFromCGRect(self.frame));
+	NSLog(@"background bounds:%@", NSStringFromCGRect(self.bounds));
+	
+	//[[UIColor cyanColor] set];
+	//UIRectFill(self.bounds);
+	//	
+	//[[UIColor redColor] set];
+	//UIRectFill(self.frame);
+	
+	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGFloat alignStroke;
 	CGMutablePathRef path;
@@ -76,9 +265,9 @@
 	CGFloat locations[5];
 	
 	CGContextSaveGState(context);
-	CGContextTranslateCTM(context, barFrame.origin.x, barFrame.origin.y);
-	CGContextClipToRect(context,barBounds);
-	CGContextSetAlpha(context, 0.8);
+	//CGContextTranslateCTM(context, self.frame.origin.x, self.frame.origin.y);
+	CGContextClipToRect(context,self.bounds);
+	//CGContextSetAlpha(context, 0.8);
 	
 	// Bar
 	
@@ -86,27 +275,27 @@
 	path = CGPathCreateMutable();
 	point = CGPointMake(2.0, 8.0);
 	CGPathMoveToPoint(path, NULL, point.x, point.y);
-	point = CGPointMake((barBounds.size.width/2.0) - 11.0, 8.0);
+	point = CGPointMake((self.bounds.size.width/2.0) - 11.0, 8.0);
 	CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	point = CGPointMake((barBounds.size.width/2.0) - 11.0, 3.0);
+	point = CGPointMake((self.bounds.size.width/2.0) - 11.0, 3.0);
 	CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	point = CGPointMake((barBounds.size.width/2.0) - 8.0, 0.0);
-	controlPoint1 = CGPointMake((barBounds.size.width/2.0) - 11.0, 1.0);
-	controlPoint2 = CGPointMake((barBounds.size.width/2.0) - 10.0, 0.0);
+	point = CGPointMake((self.bounds.size.width/2.0) - 8.0, 0.0);
+	controlPoint1 = CGPointMake((self.bounds.size.width/2.0) - 11.0, 1.0);
+	controlPoint2 = CGPointMake((self.bounds.size.width/2.0) - 10.0, 0.0);
 	CGPathAddCurveToPoint(path, NULL, controlPoint1.x, controlPoint1.y, controlPoint2.x, controlPoint2.y, point.x, point.y);
-	point = CGPointMake((barBounds.size.width/2.0) + 8.0, 0.0);
-	controlPoint1 = CGPointMake((barBounds.size.width/2.0) - 3.0, 0.0);
-	controlPoint2 = CGPointMake((barBounds.size.width/2.0) + 3.0, 0.0);
+	point = CGPointMake((self.bounds.size.width/2.0) + 8.0, 0.0);
+	controlPoint1 = CGPointMake((self.bounds.size.width/2.0) - 3.0, 0.0);
+	controlPoint2 = CGPointMake((self.bounds.size.width/2.0) + 3.0, 0.0);
 	CGPathAddCurveToPoint(path, NULL, controlPoint1.x, controlPoint1.y, controlPoint2.x, controlPoint2.y, point.x, point.y);
-	point = CGPointMake((barBounds.size.width/2.0) + 11.0, 3.0);
-	controlPoint1 = CGPointMake((barBounds.size.width/2.0) + 10.0, 0.0);
-	controlPoint2 = CGPointMake((barBounds.size.width/2.0) + 11.0, 1.0);
+	point = CGPointMake((self.bounds.size.width/2.0) + 11.0, 3.0);
+	controlPoint1 = CGPointMake((self.bounds.size.width/2.0) + 10.0, 0.0);
+	controlPoint2 = CGPointMake((self.bounds.size.width/2.0) + 11.0, 1.0);
 	CGPathAddCurveToPoint(path, NULL, controlPoint1.x, controlPoint1.y, controlPoint2.x, controlPoint2.y, point.x, point.y);
-	point = CGPointMake((barBounds.size.width/2.0) + 11.0, 8.0);
+	point = CGPointMake((self.bounds.size.width/2.0) + 11.0, 8.0);
 	CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	point = CGPointMake(barBounds.size.width + 2.0, 8.0);
+	point = CGPointMake(self.bounds.size.width + 2.0, 8.0);
 	CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	point = CGPointMake(barBounds.size.width + 2.0, 59.0);
+	point = CGPointMake(self.bounds.size.width + 2.0, 59.0);
 	CGPathAddLineToPoint(path, NULL, point.x, point.y);
 	point = CGPointMake(-2.0, 59.0);
 	CGPathAddLineToPoint(path, NULL, point.x, point.y);
@@ -168,120 +357,10 @@
 	CGContextStrokePath(context);
 	CGContextRestoreGState(context);
 	CGPathRelease(path);
-		
+	
 	// Oh, I'm bad.
 	//NSLog(@"Unregistered Copy of Opacity");
 	
-	CGContextRestoreGState(context);
-	CGColorSpaceRelease(space);
-	
-}
-
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-	CGRect toggleBarBounds = CGRectMake(0, 0, self.bounds.size.width, 57);
-	CGRect toggleBarFrame = CGRectMake(self.bounds.origin.x, self.bounds.size.height - 57, self.bounds.size.width, 57);
-	[self drawToggleBarWithBounds:toggleBarBounds inFrame:toggleBarFrame arrowUp:YES];
-}
-
-- (void)layoutSubviews {
-	//CGRect arrowFrame = CGRectMake((self.bounds.size.width / 2.0) - 3.0, 4.5, 6.0, 5.5);
-	CGRect arrowFrame = CGRectMake(self.frame.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
-	self.arrow.frame = arrowFrame;
-	[self setNeedsDisplay];
-	[super layoutSubviews];
-}
-
-@end
-
-
-////////////////////////////////////////////////////////////
-
-@implementation GNToggleArrow
-
-@synthesize pointingUp=_pointingUp;
-
-+ (GNToggleArrow *) arrowPointingUp:(BOOL)pointingUp {
-	GNToggleArrow *arrow = [[[GNToggleArrow alloc] init] autorelease];
-	[arrow setPointingUp:pointingUp];
-	//CGRect bounds = CGRectMake(0, 0, 6, 5.5);
-	//arrow.bounds = bounds;
-	return arrow;
-}
-
-- (id) init {
-	if (self = [super init]) {
-		self.backgroundColor = [UIColor clearColor];
-		self.pointingUp = YES;
-	}
-	return self;
-}
-
-- (void) setPointingUp:(BOOL)pointingUp {
-	_pointingUp = pointingUp;
-	[self setNeedsDisplay];
-}
-
-- (void) drawRect:(CGRect)rect {
-
-	NSLog(@"button frame:%@", NSStringFromCGRect(self.frame));
-	NSLog(@"button boundz:%@", NSStringFromCGRect(self.bounds));
-	
-//	[[UIColor cyanColor] set];
-//	UIRectFill(self.bounds);
-//	
-//	[[UIColor redColor] set];
-//	UIRectFill(self.frame);
-	
-	
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGFloat alignStroke;
-	CGMutablePathRef path;
-	CGPoint point;
-	UIColor *color;
-	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
-	
-	CGContextSaveGState(context);
-	CGContextTranslateCTM(context, self.frame.origin.x, self.frame.origin.y);
-	CGContextClipToRect(context,self.bounds);
-	CGContextSetAlpha(context, 0.8);
-	
-	// Arrow
-	
-	alignStroke = 0.0;
-	path = CGPathCreateMutable();
-	
-	if (self.pointingUp) {
-		point = CGPointMake(self.bounds.size.width/2.0, 0.0);
-		CGPathMoveToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake(0.0, self.bounds.size.height);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake(self.bounds.size.width, self.bounds.size.height);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((self.bounds.size.width/2.0), 0.0);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	} else {
-		point = CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height);
-		CGPathMoveToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake(0.0, 0.0);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake(self.bounds.size.width, 0.0);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-		point = CGPointMake((self.bounds.size.width/2.0), self.bounds.size.height);
-		CGPathAddLineToPoint(path, NULL, point.x, point.y);
-	}
-	
-	CGPathCloseSubpath(path);
-	
-	CGContextSetShadow(context,CGSizeMake(1.0, -1.0), 1.0);	
-	
-	color = [UIColor colorWithRed:0.79 green:0.79 blue:0.79 alpha:1.0];
-	[color setFill];
-	CGContextAddPath(context, path);
-	CGContextFillPath(context);	
-	
-	CGPathRelease(path);
-
 	CGContextRestoreGState(context);
 	CGColorSpaceRelease(space);
 }

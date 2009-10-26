@@ -139,11 +139,15 @@
 	if (touch.view == self.arrow) {
 		CGPoint location = [touch locationInView:self];
 		CGPoint previousLocation = [touch previousLocationInView:self];
-		int diff = location.y - previousLocation.y;
+		float diff = (float)(location.y - previousLocation.y);
+		
+		if (self.frame.origin.y + diff < self.upFrame.origin.y) {
+			diff /= 2;
+		}
 		
 		CGRect newFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
 
-		if (newFrame.size.height > 10) {
+		if (newFrame.size.height > self.minimizedFrame.size.height) {
 			self.frame = newFrame;
 		}
 	}

@@ -19,6 +19,7 @@
 	NSMutableArray *_activeToggleItems;
 	GNToggleArrow *_arrow;
 	GNToggleBackground *_background;
+	UITableView *_table;
 }
 
 @property (nonatomic, assign) id<GNToggleBarDelegate> *delegate;
@@ -27,6 +28,7 @@
 @property (nonatomic, readonly) NSArray *activeToggleItems;
 @property (nonatomic, retain) GNToggleArrow *arrow;
 @property (nonatomic, retain) GNToggleBackground *background;
+@property (nonatomic, retain) UITableView *table;
 
 - (id)initWithFrame:(CGRect)frame;
 

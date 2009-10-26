@@ -12,7 +12,7 @@
 
 @synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems,
 			delegate=_delegate, activeToggleItems=_activeToggleItems,
-			arrow=_arrow, background=_background;
+			arrow=_arrow, background=_background, table=_table;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -34,6 +34,11 @@
 		[self.arrow setPointingUp:YES];
 		[self addSubview:self.arrow];
 		NSLog(@"arrow: %@",self.arrow);
+		
+		CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 57, self.bounds.size.width, self.bounds.size.height-57);
+		self.table = [[[UITableView alloc] initWithFrame:tableFrame] autorelease];
+		[self addSubview:self.table];
+		NSLog(@"table: %@",self.table);
 		//[self.arrow set
     }
     return self;
@@ -75,8 +80,12 @@
 	CGRect arrowFrame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.origin.y + 4.5, 6.0, 5.5);
 	self.arrow.frame = arrowFrame;
 	
-	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 57);
+	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 59);
 	self.background.frame = backgroundFrame;
+	
+	CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 59, self.bounds.size.width, self.bounds.size.height-59);
+	self.table.frame = tableFrame;
+	//self.table = [[[UITableView alloc] initWithFrame:tableFrame] autorelease];
 	
 	[super layoutSubviews];
 }

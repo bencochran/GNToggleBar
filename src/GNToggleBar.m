@@ -12,7 +12,9 @@
 
 @synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems,
 			delegate=_delegate, activeToggleItems=_activeToggleItems,
-			arrow=_arrow, background=_background, table=_table;
+			arrow=_arrow, background=_background, table=_table,
+			upFrame=_upFrame, downFrame=_downFrame, minimizedFrame=_minimizedFrame,
+			state=_state;
 
 - (id)init {
 	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
@@ -29,6 +31,11 @@
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		self.alpha = 0.8;
 		
+		self.downFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 57, frame.size.width, 57);
+		self.upFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 275, frame.size.width, 275);
+		self.minimizedFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 10, frame.size.width, 10);
+		
+		self.state = GNToggleBarStateDown;
 		
 		CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 58);
 		self.background = [[[GNToggleBackground alloc] initWithFrame:backgroundFrame] autorelease];
@@ -49,6 +56,13 @@
 		[self addSubview:self.table];
     }
     return self;
+}
+
+- (id)initWithFrame:(CGRect)frame andState:(GNToggleBarState)state {
+	if (self = [self initWithFrame:frame]) {
+		self.state = state;
+	}
+	return self;
 }
 
 - (void)dealloc {
@@ -78,10 +92,31 @@
 	}
 }
 
+- (void)setState:(GNToggleBarState)state {
+	_state = state;
+	switch (state) {
+		case GNToggleBarStateUp:
+			self.frame = self.upFrame;
+			break;
+		case GNToggleBarStateMinimized:
+			self.frame = self.minimizedFrame;
+			break;
+		case GNToggleBarStateDown:
+		default:
+			self.frame = self.downFrame;
+			break;
+	}
+}
+
 - (void)drawRect:(CGRect)rect {
 }
 
 - (void)layoutSubviews {
+	self.downFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 57, self.frame.size.width, 57);
+	self.upFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 275, self.frame.size.width, 275);
+	self.minimizedFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 10, self.frame.size.width, 10);
+	
+	
 	CGRect arrowFrame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.origin.y + 4.5, 6.0, 5.5);
 	self.arrow.frame = arrowFrame;
 	
@@ -118,9 +153,32 @@
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
 	if (touch.view == self.arrow) {
-		// This will make the view "snap" into one of its
-		// possible states (up/down/minimized) depending
-		// on previous state and ending gesture
+		CGPoint location = [touch locationInView:self.superview];
+
+		switch (self.state) {
+			case GNToggleBarStateUp:
+				if (location.y > self.upFrame.origin.y + 80) {
+					self.state = GNToggleBarStateDown;
+				} else {
+					self.state = GNToggleBarStateUp;
+				}
+				break;
+			case GNToggleBarStateMinimized:
+				self.state = GNToggleBarStateDown;
+				break;
+			case GNToggleBarStateDown:
+				if (location.y < self.downFrame.origin.y - 30) {
+					self.state = GNToggleBarStateUp;
+				} else if (location.y > self.downFrame.origin.y + 40) {
+					self.state = GNToggleBarStateMinimized;
+				} else {
+					self.state = GNToggleBarStateDown;
+				}
+				break;
+			default:
+				self.state = GNToggleBarStateUp;
+				break;
+		}
 	}
 }
 

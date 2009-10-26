@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GNGlobal.h"
 
 
 @interface GNToggleBarController : UIViewController {

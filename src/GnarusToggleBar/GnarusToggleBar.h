@@ -1,4 +1,3 @@
-#import "GNToggleItem.h"
+#import "GNGlobal.h"
 #import "GNToggleBar.h"
 #import "GNToggleBarController.h"
-

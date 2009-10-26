@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GNGlobal.h"
 
 @class GNToggleItem, GNToggleArrow, GNToggleBackground;
 
@@ -20,6 +21,11 @@
 	GNToggleArrow *_arrow;
 	GNToggleBackground *_background;
 	UITableView *_table;
+	
+	GNToggleBarState _state;
+	CGRect _upFrame;
+	CGRect _downFrame;
+	CGRect _minimizedFrame;
 }
 
 @property (nonatomic, assign) id<GNToggleBarDelegate> *delegate;
@@ -29,8 +35,15 @@
 @property (nonatomic, retain) GNToggleArrow *arrow;
 @property (nonatomic, retain) GNToggleBackground *background;
 @property (nonatomic, retain) UITableView *table;
+@property (nonatomic) GNToggleBarState state;
+@property (nonatomic) CGRect upFrame;
+@property (nonatomic) CGRect downFrame;
+@property (nonatomic) CGRect minimizedFrame;
+
 
 - (id)initWithFrame:(CGRect)frame;
+
+- (id)initWithFrame:(CGRect)frame andState:(GNToggleBarState)state;
 
 - (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(BOOL)active;
 

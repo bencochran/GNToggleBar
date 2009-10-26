@@ -22,9 +22,9 @@
 		_activeToggleItems = [[NSMutableArray alloc] init];
 		self.backgroundColor = [UIColor clearColor];
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		//self.alpha = 0.8;
+		self.alpha = 0.8;
 		
-		CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 57);
+		CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 58);
 		self.background = [[[GNToggleBackground alloc] initWithFrame:backgroundFrame] autorelease];
 		[self addSubview:self.background];
 		NSLog(@"background: %@",self.background);
@@ -35,8 +35,10 @@
 		[self addSubview:self.arrow];
 		NSLog(@"arrow: %@",self.arrow);
 		
-		CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 57, self.bounds.size.width, self.bounds.size.height-57);
-		self.table = [[[UITableView alloc] initWithFrame:tableFrame] autorelease];
+		CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);
+		self.table = [[[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain] autorelease];
+		self.table.backgroundColor = [UIColor blackColor];
+		self.table.separatorColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.0];
 		[self addSubview:self.table];
 		NSLog(@"table: %@",self.table);
 		//[self.arrow set
@@ -80,10 +82,10 @@
 	CGRect arrowFrame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.origin.y + 4.5, 6.0, 5.5);
 	self.arrow.frame = arrowFrame;
 	
-	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 59);
+	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 58);
 	self.background.frame = backgroundFrame;
 	
-	CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 59, self.bounds.size.width, self.bounds.size.height-59);
+	CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);
 	self.table.frame = tableFrame;
 	//self.table = [[[UITableView alloc] initWithFrame:tableFrame] autorelease];
 	

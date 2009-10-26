@@ -16,7 +16,6 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-		NSLog(@"INIT!");
 		_toggleItems = nil;
 		_quickToggleItems = nil;
 		_activeToggleItems = [[NSMutableArray alloc] init];
@@ -27,21 +26,17 @@
 		CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 58);
 		self.background = [[[GNToggleBackground alloc] initWithFrame:backgroundFrame] autorelease];
 		[self addSubview:self.background];
-		NSLog(@"background: %@",self.background);
 		
 		CGRect arrowFrame = CGRectMake(self.frame.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.origin.y + 4.5, 6.0, 5.5);
 		self.arrow = [[[GNToggleArrow alloc] initWithFrame:arrowFrame] autorelease];
 		[self.arrow setPointingUp:YES];
 		[self addSubview:self.arrow];
-		NSLog(@"arrow: %@",self.arrow);
 		
 		CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);
 		self.table = [[[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain] autorelease];
 		self.table.backgroundColor = [UIColor blackColor];
 		self.table.separatorColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.0];
 		[self addSubview:self.table];
-		NSLog(@"table: %@",self.table);
-		//[self.arrow set
     }
     return self;
 }
@@ -77,8 +72,6 @@
 }
 
 - (void)layoutSubviews {
-	//CGRect arrowFrame = CGRectMake((self.bounds.size.width / 2.0) - 3.0, 4.5, 6.0, 5.5);
-	//CGRect arrowFrame = CGRectMake(self.frame.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.size.height - 52.5, 6.0, 5.5);
 	CGRect arrowFrame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width / 2.0) - 3.0, self.bounds.origin.y + 4.5, 6.0, 5.5);
 	self.arrow.frame = arrowFrame;
 	
@@ -87,16 +80,8 @@
 	
 	CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);
 	self.table.frame = tableFrame;
-	//self.table = [[[UITableView alloc] initWithFrame:tableFrame] autorelease];
 	
 	[super layoutSubviews];
-}
-
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = [touches anyObject];
-	if (touch.view == self.arrow) {
-		NSLog(@"touch began: %@", touch);
-	}
 }
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -118,20 +103,21 @@
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
 	if (touch.view == self.arrow) {
-		NSLog(@"touch ended: %@", touch);
+		// This will make the view "snap" into one of its
+		// possible states (up/down/minimized) depending
+		// on previous state and ending gesture
 	}
 }
 
 - (void) touchesCanceled:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
 	if (touch.view == self.arrow) {
-		NSLog(@"touch canceled: %@", touch);
+		// Jump back to previous state (up/down/minimized)
 	}
 }
 
 
 @end
-
 
 ////////////////////////////////////////////////////////////
 
@@ -169,17 +155,7 @@
 	return CGRectContainsPoint(touchable, point);
 }
 
-- (void) drawRect:(CGRect)rect {
-	NSLog(@"button frame:%@", NSStringFromCGRect(self.frame));
-	NSLog(@"button bounds:%@", NSStringFromCGRect(self.bounds));
-	
-//	[[UIColor blueColor] set];
-//	UIRectFill(self.bounds);
-//	
-//	[[UIColor redColor] set];
-//	UIRectFill(self.frame);
-	
-	
+- (void) drawRect:(CGRect)rect {	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGFloat alignStroke;
 	CGMutablePathRef path;
@@ -188,9 +164,6 @@
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	
 	CGContextSaveGState(context);
-	//CGContextTranslateCTM(context, self.frame.origin.x, self.frame.origin.y);
-	//CGContextClipToRect(context,self.bounds);
-	//CGContextSetAlpha(context, 0.8);
 	
 	// Arrow
 	
@@ -249,16 +222,6 @@
 
 - (void) drawRect:(CGRect)rect {
 	
-	NSLog(@"background frame:%@", NSStringFromCGRect(self.frame));
-	NSLog(@"background bounds:%@", NSStringFromCGRect(self.bounds));
-	
-	//[[UIColor cyanColor] set];
-	//UIRectFill(self.bounds);
-	//	
-	//[[UIColor redColor] set];
-	//UIRectFill(self.frame);
-	
-	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGFloat alignStroke;
 	CGMutablePathRef path;
@@ -277,9 +240,7 @@
 	CGFloat locations[5];
 	
 	CGContextSaveGState(context);
-	//CGContextTranslateCTM(context, self.frame.origin.x, self.frame.origin.y);
 	CGContextClipToRect(context,self.bounds);
-	//CGContextSetAlpha(context, 0.8);
 	
 	// Bar
 	

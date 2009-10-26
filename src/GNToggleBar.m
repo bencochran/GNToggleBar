@@ -14,6 +14,12 @@
 			delegate=_delegate, activeToggleItems=_activeToggleItems,
 			arrow=_arrow, background=_background, table=_table;
 
+- (id)init {
+	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+	CGRect fullFrame = CGRectMake(appFrame.origin.x, appFrame.origin.y + appFrame.size.height - 58, appFrame.size.width, 58);
+	return [self initWithFrame:fullFrame];
+}
+
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
 		_toggleItems = nil;

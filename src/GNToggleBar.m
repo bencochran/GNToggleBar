@@ -99,16 +99,15 @@
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
 	if (touch.view == self.arrow) {
-		NSLog(@"touch moved: %@", touch);
-		CGPoint locationInSuperView = [touch locationInView:self.superview];
 		CGPoint location = [touch locationInView:self];
 		CGPoint previousLocation = [touch previousLocationInView:self];
-		
 		int diff = location.y - previousLocation.y;
 		
-		CGRect newFrame = CGRectMake(self.frame.origin.x, locationInSuperView.y, self.frame.size.width, self.frame.size.height - diff);
-		
-		self.frame = newFrame;
+		CGRect newFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
+
+		if (newFrame.size.height > 10) {
+			self.frame = newFrame;
+		}
 	}
 }
 

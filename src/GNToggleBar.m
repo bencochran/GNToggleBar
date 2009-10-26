@@ -34,6 +34,9 @@
 		[self addSubview:self.arrow];
 		
 		CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);
+		if (tableFrame.size.height > 275) {
+			tableFrame.size.height = 275;
+		}		
 		self.table = [[[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain] autorelease];
 		self.table.backgroundColor = [UIColor blackColor];
 		self.table.separatorColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.0];
@@ -80,6 +83,11 @@
 	self.background.frame = backgroundFrame;
 	
 	CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);
+	
+	if (tableFrame.size.height > 275) {
+		tableFrame.size.height = 275;
+	}
+	
 	self.table.frame = tableFrame;
 	
 	[super layoutSubviews];

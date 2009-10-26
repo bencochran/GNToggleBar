@@ -20,8 +20,9 @@
 		_quickToggleItems = nil;
 		_activeToggleItems = [[NSMutableArray alloc] init];
 		self.backgroundColor = [UIColor clearColor];
-		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		self.alpha = 0.8;
+		
 		
 		CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 58);
 		self.background = [[[GNToggleBackground alloc] initWithFrame:backgroundFrame] autorelease];

@@ -55,7 +55,7 @@
 		self.table.separatorColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.0];
 		[self addSubview:self.table];
 		
-		CGRect itemFrame = CGRectMake(self.bounds.origin.x + 10, self.bounds.origin.y + 10, 30, 30);
+		CGRect itemFrame = CGRectMake(self.bounds.origin.x + 10, self.bounds.origin.y + 13, 30, 30);
 		self.item = [[GNToggleItem alloc] initWithTitle:@"Food" image:[UIImage imageNamed:@"food.png"]];
 		self.item.frame = itemFrame;
 		[self addSubview:self.item];
@@ -128,7 +128,7 @@
 	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 58);
 	self.background.frame = backgroundFrame;
 	
-	CGRect itemFrame = CGRectMake(self.bounds.origin.x + 10, self.bounds.origin.y + 10, 30, 30);
+	CGRect itemFrame = CGRectMake(self.bounds.origin.x + 10, self.bounds.origin.y + 13, 30, 30);
 	self.item.frame = itemFrame;
 	
 	CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);

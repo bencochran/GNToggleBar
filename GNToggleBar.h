@@ -26,6 +26,8 @@
 	CGRect _upFrame;
 	CGRect _downFrame;
 	CGRect _minimizedFrame;
+	
+	GNToggleItem *_item;
 }
 
 @property (nonatomic, assign) id<GNToggleBarDelegate> *delegate;
@@ -39,6 +41,7 @@
 @property (nonatomic) CGRect upFrame;
 @property (nonatomic) CGRect downFrame;
 @property (nonatomic) CGRect minimizedFrame;
+@property (nonatomic, retain) GNToggleItem* item;
 
 
 - (id)initWithFrame:(CGRect)frame;

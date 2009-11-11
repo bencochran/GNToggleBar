@@ -13,14 +13,14 @@
 @class GNToggleBar;
 
 @interface GNToggleItem : UIButton {
-	NSString *_title;
-	NSString *_icon;
-	GNToggleBar *_toggleBar;
+	NSString* _title;
+	UIImage* _image;
+	GNToggleBar* _toggleBar;
 }
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *icon;
+@property (nonatomic, retain) UIImage *image;
 
-- (id)initWithTitle:(NSString *)title andIcon:(NSString *)icon;
+- (id)initWithTitle:(NSString *)title image:(UIImage *)image;
 
 @end

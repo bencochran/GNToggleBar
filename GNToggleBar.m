@@ -24,9 +24,9 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-		_toggleItems = nil;
-		_quickToggleItems = nil;
-		_activeToggleItems = [[NSMutableArray alloc] init];
+		self.toggleItems = nil;
+		self.quickToggleItems = [[[NSMutableArray alloc] initWithCapacity:5] autorelease];
+		_activeToggleItems = [[[NSMutableArray alloc] init] autorelease];
 		self.backgroundColor = [UIColor clearColor];
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		self.alpha = 0.8;
@@ -55,10 +55,10 @@
 		self.table.separatorColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.0];
 		[self addSubview:self.table];
 		
-		CGRect itemFrame = CGRectMake(self.bounds.origin.x + 4, self.bounds.origin.y + 4, self.bounds.size.width/5, 44);
-		self.item = [[GNToggleItem alloc] initWithTitle:@"Food" image:[UIImage imageNamed:@"food.png"]];
-		self.item.frame = itemFrame;
-		[self addSubview:self.item];
+//		CGRect itemFrame = CGRectMake(self.bounds.origin.x + 4, self.bounds.origin.y + 4, self.bounds.size.width/5, 44);
+//		self.item = [[GNToggleItem alloc] initWithTitle:@"Food" image:[UIImage imageNamed:@"food.png"]];
+//		self.item.frame = itemFrame;
+//		[self addSubview:self.item];
     }
     return self;
 }
@@ -80,13 +80,18 @@
     [super dealloc];
 }
 
-- (void)setToggleItems:(NSArray *)toggleItems {
+- (void)setToggleItems:(NSMutableArray *)toggleItems {
 	[_toggleItems release];
 	_toggleItems = [toggleItems retain];
 	
 	[_activeToggleItems removeAllObjects];
 	
 	[self setNeedsLayout];
+}
+
+- (void)addQuickToggleItem:(GNToggleItem*)item {
+	[self.quickToggleItems addObject:item];
+	[self addSubview:item];
 }
 
 - (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(BOOL)active {
@@ -128,8 +133,28 @@
 	CGRect backgroundFrame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, 58);
 	self.background.frame = backgroundFrame;
 	
-	CGRect itemFrame = CGRectMake(self.bounds.origin.x + 4, self.bounds.origin.y + 11, self.bounds.size.width/5, 45);
-	self.item.frame = itemFrame;
+	CGRect itemFrame;
+	NSUInteger i, count = [self.quickToggleItems count];
+	
+	CGFloat width = (self.bounds.size.width - 8)/self.quickToggleItems.count;
+	NSLog(@"width: %f",width);
+	
+	for (i = 0; i < count; i++) {
+		GNToggleItem *item = [self.quickToggleItems objectAtIndex:i];
+		itemFrame = CGRectMake(floor(self.bounds.origin.x + 4 + width * i), self.bounds.origin.y + 11, floor(width), 44);
+		item.frame = itemFrame;
+	}
+	
+//	for (GNToggleItem *item in self.quickToggleItems) {
+//		itemFrame = CGRectMake(self.bounds.origin.x + 4, self.bounds.origin.y + 4, self.bounds.size.width/5, 44);
+//		//		self.item = [[GNToggleItem alloc] initWithTitle:@"Food" image:[UIImage imageNamed:@"food.png"]];
+//		//		self.item.frame = itemFrame;
+//		//		[self addSubview:self.item];
+//		
+//	}
+	
+//	CGRect itemFrame = CGRectMake(self.bounds.origin.x + 4, self.bounds.origin.y + 11, self.bounds.size.width/5, 45);
+//	self.item.frame = itemFrame;
 	
 	CGRect tableFrame = CGRectMake(self.frame.origin.x, self.bounds.origin.y + 58, self.bounds.size.width, self.bounds.size.height-58);
 	

@@ -14,4 +14,6 @@
 
 }
 
+- (void)addQuickToggleItem:(GNToggleItem*)item;
+
 @end

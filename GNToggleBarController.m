@@ -29,6 +29,10 @@
 	self.view = [[[GNToggleBar alloc] init] autorelease];
 }
 
+- (void)addQuickToggleItem:(GNToggleItem*)item {
+	[(GNToggleBar*)self.view addQuickToggleItem:item];
+}
+
 /*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {

@@ -15,8 +15,8 @@
 
 @interface GNToggleBar : UIView {
 	id<GNToggleBarDelegate> *_delegate;
-	NSArray *_toggleItems;
-	NSArray *_quickToggleItems;
+	NSMutableArray *_toggleItems;
+	NSMutableArray *_quickToggleItems;
 	NSMutableArray *_activeToggleItems;
 	GNToggleArrow *_arrow;
 	GNToggleBackground *_background;
@@ -31,8 +31,8 @@
 }
 
 @property (nonatomic, assign) id<GNToggleBarDelegate> *delegate;
-@property (nonatomic, retain) NSArray *toggleItems;
-@property (nonatomic, retain) NSArray *quickToggleItems;
+@property (nonatomic, retain) NSMutableArray *toggleItems;
+@property (nonatomic, retain) NSMutableArray *quickToggleItems;
 @property (nonatomic, readonly) NSArray *activeToggleItems;
 @property (nonatomic, retain) GNToggleArrow *arrow;
 @property (nonatomic, retain) GNToggleBackground *background;
@@ -49,6 +49,8 @@
 - (id)initWithFrame:(CGRect)frame andState:(GNToggleBarState)state;
 
 - (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(BOOL)active;
+
+- (void)addQuickToggleItem:(GNToggleItem*)item;
 
 @end
 

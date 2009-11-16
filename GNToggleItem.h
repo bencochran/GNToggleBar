@@ -10,17 +10,32 @@
 #import <UIKit/UIKit.h>
 #import "GNGlobal.h"
 
-@class GNToggleBar;
+@class GNToggleBar, GNToggleIcon;
 
 @interface GNToggleItem : UIButton {
-	NSString* _title;
-	UIImage* _image;
+	GNToggleIcon* _icon;
+	UILabel* _label;
+	
 	GNToggleBar* _toggleBar;
 }
 
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, retain) UIImage *image;
+@property (nonatomic, retain) UILabel *label;
+@property (nonatomic, retain) GNToggleIcon *icon;
 
 - (id)initWithTitle:(NSString *)title image:(UIImage *)image;
+
+@end
+
+////////////////////////////////////////////////////////////
+
+@interface GNToggleIcon : UIView {
+	UIImage* _image;
+	BOOL _active;
+}
+
+@property (nonatomic, retain) UIImage *image;
+@property (nonatomic) BOOL active;
+
+- (id)initWithImage:(UIImage *)image;
 
 @end

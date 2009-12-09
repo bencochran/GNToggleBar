@@ -12,7 +12,7 @@
 
 @class GNToggleBar, GNToggleIcon;
 
-@interface GNToggleItem : UIButton {
+@interface GNToggleItem : UIButton <NSCopying> {
 	GNToggleIcon* _icon;
 	UILabel* _label;
 	

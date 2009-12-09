@@ -67,8 +67,12 @@
 	self.icon.active = !self.icon.active;
 	[self.icon setNeedsDisplay];
 	
-	// In the future, we'll call our delegate here and inform it of
-	// a state change.
+	// Send the TouchUpInside and ValueChanged event
+	[self sendActionsForControlEvents:UIControlEventTouchUpInside | UIControlEventValueChanged];
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+	return [self retain];
 }
 
 - (void)dealloc {

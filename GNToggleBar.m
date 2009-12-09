@@ -11,7 +11,7 @@
 @implementation GNToggleBar
 
 @synthesize toggleItems=_toggleItems, quickToggleItems=_quickToggleItems,
-			delegate=_delegate, activeToggleItems=_activeToggleItems,
+			activeToggleItems=_activeToggleItems,
 			arrow=_arrow, background=_background, table=_table,
 			upFrame=_upFrame, downFrame=_downFrame, minimizedFrame=_minimizedFrame,
 			state=_state, item=_item;

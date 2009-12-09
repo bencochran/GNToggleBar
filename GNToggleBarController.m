@@ -11,6 +11,8 @@
 
 @implementation GNToggleBarController
 
+@synthesize delegate=_delegate;
+
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -30,7 +32,22 @@
 }
 
 - (void)addQuickToggleItem:(GNToggleItem*)item {
+	[item addTarget:self action:@selector(itemDidToggle:) forControlEvents:UIControlEventTouchUpInside];
 	[(GNToggleBar*)self.view addQuickToggleItem:item];
+}
+
+- (void)itemDidToggle:(GNToggleItem *)item {
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(toggleBarController:toggleItem:changedToState:)]) {
+		[self.delegate toggleBarController:self toggleItem:item changedToState:item.icon.active]; 
+	}
+	//	if ([self.delegate ]) {
+//		
+//	}
+	NSLog(@"event!: %@", item);
+}
+	 
+- (NSArray *)activeToggleItems {
+	return [(GNToggleBar*)self.view activeToggleItems];	
 }
 
 /*

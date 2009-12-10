@@ -12,15 +12,65 @@
 
 @implementation GNToggleItem
 
-@synthesize label=_label, icon=_icon;
+@synthesize quickView=_quickView, tableCell=_tableCell, title=_title,
+			image=_image, active=_active;
 
 - (id)initWithTitle:(NSString *)title image:(UIImage *)image {
+	if (self = [super init]) {
+		_title = [title copy];
+		_image = [image retain];
+	}
+	return self;
+}
+
+- (void)setActive:(BOOL)active {
+	_active = active;
+	
+	[self.quickView setNeedsDisplay];
+	[self.tableCell setNeedsDisplay];
+}
+
+- (GNQuickToggleItemView *)quickView {
+	if (_quickView == nil) {
+		self.quickView = [GNQuickToggleItemView viewForItem:self];
+	}
+	return _quickView;
+}
+
+- (GNToggleIcon *)icon {
+	return [[[GNToggleIcon alloc] initWithItem:self] autorelease];
+}
+
+//- (void)setToggleBar:(GNToggleBar *)toggleBar {
+//	_toggleBar = toggleBar;
+//}
+
+- (id)copyWithZone:(NSZone *)zone {
+	return [self retain];
+}
+
+@end
+
+////////////////////////////////////////////////////////////
+
+@implementation GNQuickToggleItemView
+
+@synthesize item=_item, icon=_icon, label=_label;
+
++ (GNQuickToggleItemView *)viewForItem:(GNToggleItem *)item {
+	return [[[GNQuickToggleItemView alloc] initWithItem:item] autorelease];
+}
+
+- (id)initWithItem:(GNToggleItem *)item {
 	if (self = [self init]) {
 		self.backgroundColor = [UIColor clearColor];
 		self.contentMode = UIViewContentModeRedraw;
 
+		self.item = item;
+		
 		// Set up and add the icon view
-		self.icon = [[GNToggleIcon alloc] initWithImage:image];
+//		self.icon = [[GNToggleIcon alloc] initWithImage:image];
+		self.icon = self.item.icon;
 		self.icon.frame = CGRectMake(0, 2, self.bounds.size.width, 30);
 		self.icon.center = CGPointMake(self.bounds.size.width / 2, 15);
 		[self addSubview:self.icon];
@@ -29,7 +79,7 @@
 		CGRect labelFrame = CGRectMake(0, 31, self.bounds.size.width, 14);
 		self.label = [[UILabel alloc] initWithFrame:labelFrame];
 		self.label.backgroundColor = [UIColor clearColor];
-		self.label.text = title;
+		self.label.text = self.item.title;
 		self.label.textColor = [UIColor whiteColor];
 		self.label.shadowColor = [UIColor blackColor];
 		self.label.shadowOffset = CGSizeMake(0, -1);
@@ -49,8 +99,9 @@
 	return self;
 }
 
-- (void)setToggleBar:(GNToggleBar *)toggleBar {
-	_toggleBar = toggleBar;
+- (void)setNeedsDisplay {
+	[super setNeedsDisplay];
+	[self.icon setNeedsDisplay];
 }
 
 - (void)layoutSubviews {
@@ -64,15 +115,11 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	// Simply toggle our active state and redraw
-	self.icon.active = !self.icon.active;
-	[self.icon setNeedsDisplay];
+	self.item.active = !self.item.active;
+//	[self.icon setNeedsDisplay];
 	
 	// Send the TouchUpInside and ValueChanged event
 	[self sendActionsForControlEvents:UIControlEventTouchUpInside | UIControlEventValueChanged];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-	return [self retain];
 }
 
 - (void)dealloc {
@@ -86,16 +133,101 @@
 
 ////////////////////////////////////////////////////////////
 
+@implementation GNToggleItemTableViewCell
+
+@synthesize item=_item, icon=_icon, title=_title;
+
+static UIFont *font = nil;
+
++ (void)initialize
+{
+	if(self == [GNToggleItemTableViewCell class])
+	{
+		font = [[UIFont boldSystemFontOfSize:20] retain];
+		// this is a good spot to load any graphics you might be drawing in -drawContentView:
+		// just load them and retain them here (ONLY if they're small enough that you don't care about them wasting memory)
+		// the idea is to do as LITTLE work (e.g. allocations) in -drawContentView: as possible
+	}
+}
+
+- (void)setItem:(GNToggleItem *)item {
+	if (_item != item) {
+		_item = item;
+		
+		self.icon = item.icon;
+		self.icon.frame = CGRectMake(4, 6, 30, 30);
+		[self addSubview:self.icon];
+		
+		self.title = item.title;
+		[self setNeedsDisplay];
+		
+		self.item.tableCell = self;
+	}
+}
+
+
+- (void)setNeedsDisplay {
+	[super setNeedsDisplay];
+	[self.icon setNeedsDisplay];
+}
+
+//- (void)setIcon:(GNToggleIcon *)icon {
+//	@synchronized(self) {
+//        if (_icon != icon) {
+//            [_icon release];
+//            _icon = [icon retain];
+//			_icon.frame = CGRectMake(0, 0, 30, 30);
+//			[self addSubview:self.icon];
+//			[self setNeedsDisplay];
+//        }
+//    }	
+//}
+
+//- (void)setTitle:(NSString *)title {
+//	[_title release];
+//	_title = [title copy];
+//	[self setNeedsDisplay];
+//}
+
+- (void)drawContentView:(CGRect)r {
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	UIColor *backgroundColor = [UIColor clearColor];
+	UIColor *textColor = [UIColor whiteColor];
+	
+//	if(self.selected)
+//	{
+//		backgroundColor = [UIColor clearColor];
+//		textColor = [UIColor whiteColor];
+//	}
+	
+	[backgroundColor set];
+	CGContextFillRect(context, r);
+	
+	CGPoint p;
+	p.x = 40;
+	p.y = 9;
+	
+	[textColor set];
+	[_title drawAtPoint:p withFont:font];
+}
+
+@end
+
+////////////////////////////////////////////////////////////
+
 @implementation GNToggleIcon
 
-@synthesize image=_image, active=_active;
+@synthesize item=_item, image=_image;
 
--(id) initWithImage:(UIImage *)image {
+-(id) initWithItem:(GNToggleItem *)item {
 	if (self = [super init]) {
-		self.image = image;
+		self.item = item;
+		
+		self.image = self.item.image;
 		self.backgroundColor = [UIColor clearColor];
 		self.contentMode = UIViewContentModeRedraw;
-		self.active = NO;
+		//self.item.active = NO;
 		
 		// Make an UIImageView of our image and use its layer
 		// as this layer's mask. There's probably a less resource
@@ -139,7 +271,7 @@
 	drawRect = CGRectMake(self.bounds.size.width / 2 - 15, 0.0, 30.0, 30.0);
 	CGPathAddRect(path, NULL, drawRect);
 	
-	if (self.active) {
+	if (self.item.active) {
 		colors = [NSMutableArray arrayWithCapacity:4];
 		color = [UIColor colorWithRed:0.835 green:0.882 blue:0.976 alpha:1.0];
 		[colors addObject:(id)[color CGColor]];

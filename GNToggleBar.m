@@ -98,7 +98,7 @@
 	if ([self.quickToggleItems count] < 5) {
 		[self.quickToggleItems addObject:item];
 	}
-	[self addSubview:item];
+	[self addSubview:item.quickView];
 	[self.table reloadData];
 }
 
@@ -149,7 +149,7 @@
 	for (i = 0; i < count; i++) {
 		GNToggleItem *item = [self.quickToggleItems objectAtIndex:i];
 		itemFrame = CGRectMake(floor(self.bounds.origin.x + 4 + width * i), self.bounds.origin.y + 11, floor(width), 44);
-		item.frame = itemFrame;
+		item.quickView.frame = itemFrame;
 	}
 	
 //	for (GNToggleItem *item in self.quickToggleItems) {
@@ -246,10 +246,10 @@
 
 #pragma mark Table View Delegate
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	// we don't want any of the cells to be selected
-	return nil;
-}
+//- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//	// we don't want any of the cells to be selected
+//	return nil;
+//}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return UITableViewCellEditingStyleNone;
@@ -276,16 +276,21 @@
 	
 	static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	GNToggleItemTableViewCell *cell = (GNToggleItemTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+        cell = [[[GNToggleItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
 	GNToggleItem *item = [self.toggleItems objectAtIndex:indexPath.row];
 		
-	cell.textLabel.backgroundColor = [UIColor clearColor];
-	cell.textLabel.textColor = [UIColor whiteColor];
-	cell.textLabel.text = item.label.text;
+//	cell.textLabel.backgroundColor = [UIColor clearColor];
+//	cell.textLabel.textColor = [UIColor whiteColor];
+//	cell.textLabel.text = item.title;
+//	cell.imageView.image = item.icon.image;
+	cell.item = item;
+//	cell.title = item.title;
+//	cell.icon = item.icon;
 	
 	return cell;
 }

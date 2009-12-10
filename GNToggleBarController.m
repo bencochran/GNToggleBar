@@ -32,13 +32,13 @@
 }
 
 - (void)addToggleItem:(GNToggleItem*)item {
-	[item addTarget:self action:@selector(itemDidToggle:) forControlEvents:UIControlEventTouchUpInside];
+	[item.quickView addTarget:self action:@selector(itemDidToggle:) forControlEvents:UIControlEventTouchUpInside];
 	[(GNToggleBar*)self.view addToggleItem:item];
 }
 
-- (void)itemDidToggle:(GNToggleItem *)item {
+- (void)itemDidToggle:(GNQuickToggleItemView *)quickView {
 	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(toggleBarController:toggleItem:changedToState:)]) {
-		[self.delegate toggleBarController:self toggleItem:item changedToState:item.icon.active]; 
+		[self.delegate toggleBarController:self toggleItem:quickView.item changedToState:quickView.item.active]; 
 	}
 }
 	 

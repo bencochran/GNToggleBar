@@ -31,19 +31,15 @@
 	self.view = [[[GNToggleBar alloc] init] autorelease];
 }
 
-- (void)addQuickToggleItem:(GNToggleItem*)item {
+- (void)addToggleItem:(GNToggleItem*)item {
 	[item addTarget:self action:@selector(itemDidToggle:) forControlEvents:UIControlEventTouchUpInside];
-	[(GNToggleBar*)self.view addQuickToggleItem:item];
+	[(GNToggleBar*)self.view addToggleItem:item];
 }
 
 - (void)itemDidToggle:(GNToggleItem *)item {
 	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(toggleBarController:toggleItem:changedToState:)]) {
 		[self.delegate toggleBarController:self toggleItem:item changedToState:item.icon.active]; 
 	}
-	//	if ([self.delegate ]) {
-//		
-//	}
-	NSLog(@"event!: %@", item);
 }
 	 
 - (NSArray *)activeToggleItems {

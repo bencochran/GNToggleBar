@@ -11,7 +11,7 @@
 
 @class GNToggleItem, GNToggleArrow, GNToggleBackground;
 
-@interface GNToggleBar : UIView {
+@interface GNToggleBar : UIView <UITableViewDelegate, UITableViewDataSource> {
 	NSMutableArray *_toggleItems;
 	NSMutableArray *_quickToggleItems;
 	NSMutableArray *_activeToggleItems;
@@ -46,7 +46,7 @@
 
 - (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(BOOL)active;
 
-- (void)addQuickToggleItem:(GNToggleItem*)item;
+- (void)addToggleItem:(GNToggleItem*)item;
 
 @end
 

@@ -18,7 +18,7 @@
 @property (nonatomic, assign) NSObject<GNToggleBarDelegate> *delegate;
 @property (nonatomic, readonly) NSArray *activeToggleItems;
 
-- (void)addQuickToggleItem:(GNToggleItem*)item;
+- (void)addToggleItem:(GNToggleItem*)item;
 
 @end
 

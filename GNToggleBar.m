@@ -24,7 +24,7 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-		self.toggleItems = nil;
+		self.toggleItems = [NSMutableArray array];
 		self.quickToggleItems = [[[NSMutableArray alloc] initWithCapacity:5] autorelease];
 		_activeToggleItems = [[[NSMutableArray alloc] init] autorelease];
 		self.backgroundColor = [UIColor clearColor];
@@ -53,6 +53,10 @@
 		self.table = [[[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain] autorelease];
 		self.table.backgroundColor = [UIColor blackColor];
 		self.table.separatorColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.0];
+		
+		self.table.delegate = self;
+		self.table.dataSource = self;
+		[self.table setEditing:YES animated:NO];
 		[self addSubview:self.table];
 		
 //		CGRect itemFrame = CGRectMake(self.bounds.origin.x + 4, self.bounds.origin.y + 4, self.bounds.size.width/5, 44);
@@ -89,9 +93,13 @@
 	[self setNeedsLayout];
 }
 
-- (void)addQuickToggleItem:(GNToggleItem*)item {
-	[self.quickToggleItems addObject:item];
+- (void)addToggleItem:(GNToggleItem*)item {
+	[self.toggleItems addObject:item];
+	if ([self.quickToggleItems count] < 5) {
+		[self.quickToggleItems addObject:item];
+	}
 	[self addSubview:item];
+	[self.table reloadData];
 }
 
 - (void)setStateForToggleItem:(GNToggleItem *)toggleItem active:(BOOL)active {
@@ -137,7 +145,6 @@
 	NSUInteger i, count = [self.quickToggleItems count];
 	
 	CGFloat width = (self.bounds.size.width - 8)/self.quickToggleItems.count;
-	NSLog(@"width: %f",width);
 	
 	for (i = 0; i < count; i++) {
 		GNToggleItem *item = [self.quickToggleItems objectAtIndex:i];
@@ -166,6 +173,17 @@
 	
 	[super layoutSubviews];
 }
+
+- (BOOL) pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	/*
+	 * We want the touchable area to be quite a bit larger than
+	 * the very small arrow itself, so let's test againsts something
+	 * larger than the bounds.
+	 */
+	CGRect touchableArrow = CGRectMake(self.arrow.frame.origin.x-20, self.arrow.frame.origin.y-20, self.arrow.frame.size.width+40, self.arrow.frame.size.height+35);
+	return CGRectContainsPoint(self.bounds, point) || CGRectContainsPoint(touchableArrow, point);
+}
+
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
@@ -226,6 +244,51 @@
 	}
 }
 
+#pragma mark Table View Delegate
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	// we don't want any of the cells to be selected
+	return nil;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return UITableViewCellEditingStyleNone;
+}
+
+#pragma mark Table View Data Source
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	[self.toggleItems exchangeObjectAtIndex:toIndexPath.row	withObjectAtIndex:fromIndexPath.row];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	NSLog(@"self.toggleItems: %@", self.toggleItems);
+	NSLog(@"self.quickToggleItems: %@", self.quickToggleItems);
+	NSLog(@"number of rows: %i", [self.toggleItems count]);
+	return [self.toggleItems count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+	GNToggleItem *item = [self.toggleItems objectAtIndex:indexPath.row];
+		
+	cell.textLabel.backgroundColor = [UIColor clearColor];
+	cell.textLabel.textColor = [UIColor whiteColor];
+	cell.textLabel.text = item.label.text;
+	
+	return cell;
+}
 
 @end
 
@@ -246,6 +309,7 @@
 		self.backgroundColor = [UIColor clearColor];
 		self.contentMode = UIViewContentModeTop;
 		self.pointingUp = YES;
+		self.clipsToBounds = NO;
 	}
 	return self;
 }
@@ -261,11 +325,11 @@
 	 * the very small arrow itself, so let's test againsts something
 	 * larger than the bounds.
 	 */
-	CGRect touchable = CGRectMake(self.bounds.origin.x-15, self.bounds.origin.y-10, self.bounds.size.width+30, self.bounds.size.height+15);
+	CGRect touchable = CGRectMake(self.bounds.origin.x-20, self.bounds.origin.y-20, self.bounds.size.width+40, self.bounds.size.height+35);
 	return CGRectContainsPoint(touchable, point);
 }
 
-- (void) drawRect:(CGRect)rect {	
+- (void) drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGFloat alignStroke;
 	CGMutablePathRef path;

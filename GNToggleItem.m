@@ -32,18 +32,21 @@
 
 - (GNQuickToggleItemView *)quickView {
 	if (_quickView == nil) {
-		self.quickView = [GNQuickToggleItemView viewForItem:self];
+		_quickView = [[GNQuickToggleItemView viewForItem:self] retain];
 	}
 	return _quickView;
+}
+
+- (GNToggleItemTableViewCell *)tableCell {
+	if (_tableCell == nil) {
+		_tableCell = [[GNToggleItemTableViewCell cellForItem:self] retain];
+	}
+	return _tableCell;
 }
 
 - (GNToggleIcon *)icon {
 	return [[[GNToggleIcon alloc] initWithItem:self] autorelease];
 }
-
-//- (void)setToggleBar:(GNToggleBar *)toggleBar {
-//	_toggleBar = toggleBar;
-//}
 
 - (id)copyWithZone:(NSZone *)zone {
 	return [self retain];
@@ -121,9 +124,13 @@
 	if (isTouching) {
 		// Simply toggle our active state and redraw
 		self.item.active = !self.item.active;
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:GNToggleItemDidToggle
+															object:self.item
+														  userInfo:nil];
 		
 		// Send the TouchUpInside and ValueChanged event
-		[self sendActionsForControlEvents:UIControlEventTouchUpInside | UIControlEventValueChanged];
+//		[self sendActionsForControlEvents:UIControlEventTouchUpInside | UIControlEventValueChanged];
 		
 		isTouching = NO;
 	}
@@ -140,83 +147,134 @@
 
 ////////////////////////////////////////////////////////////
 
-@implementation GNToggleItemTableViewCell
-
-@synthesize item=_item, icon=_icon, title=_title;
-
-static UIFont *font = nil;
-
-+ (void)initialize
+@interface GNToggleCellContentView : UIView
 {
-	if(self == [GNToggleItemTableViewCell class])
-	{
-		font = [[UIFont boldSystemFontOfSize:20] retain];
-		// this is a good spot to load any graphics you might be drawing in -drawContentView:
-		// just load them and retain them here (ONLY if they're small enough that you don't care about them wasting memory)
-		// the idea is to do as LITTLE work (e.g. allocations) in -drawContentView: as possible
-	}
+	GNToggleItemTableViewCell *_cell;
+	GNToggleIcon *_icon;
+	UILabel *_label;
+	BOOL isTouching;
 }
 
-- (void)setItem:(GNToggleItem *)item {
-	if (_item != item) {
-		_item = item;
+@property (nonatomic, retain) GNToggleIcon *icon;
+@property (nonatomic, retain) UILabel *label;
+
+- (id)initWithFrame:(CGRect)frame cell:(GNToggleItemTableViewCell *)cell;
+
+@end
+
+@implementation GNToggleCellContentView
+
+@synthesize icon=_icon;
+@synthesize label=_label;
+
+- (id)initWithFrame:(CGRect)frame cell:(GNToggleItemTableViewCell *)cell {
+	if (self = [super initWithFrame:frame]) {
+		_cell = cell;
 		
-		self.icon = item.icon;
-		self.icon.frame = CGRectMake(4, 6, 30, 30);
+		self.opaque = NO;
+        self.backgroundColor = _cell.backgroundColor;
+		
+		self.icon = _cell.item.icon;
+		self.icon.frame = CGRectMake(2, 3, 30, 30);
 		[self addSubview:self.icon];
 		
-		self.title = item.title;
-		[self setNeedsDisplay];
+		// Set up and add the label view
+		CGRect labelFrame = CGRectMake(45, 11, self.bounds.size.width - 65, 22);
+		self.label = [[UILabel alloc] initWithFrame:labelFrame];
+		self.label.backgroundColor = [UIColor clearColor];
+		self.label.text = _cell.item.title;
+		self.label.textColor = [UIColor whiteColor];
+		self.label.shadowColor = [UIColor blackColor];
+		self.label.shadowOffset = CGSizeMake(0, -1);
+		self.label.lineBreakMode = UILineBreakModeTailTruncation;
+		self.label.font = [UIFont boldSystemFontOfSize:17];
+		self.label.textAlignment = UITextAlignmentLeft;
+		[self addSubview:self.label];		
 		
-		self.item.tableCell = self;
 	}
+	return self;
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	isTouching = YES;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+	if (isTouching) {
+		// Simply toggle our active state and redraw
+		_cell.item.active = !_cell.item.active;
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:GNToggleItemDidToggle
+															object:_cell.item
+														  userInfo:nil];
+		
+		// Send the TouchUpInside and ValueChanged event
+//		[self sendActionsForControlEvents:UIControlEventTouchUpInside | UIControlEventValueChanged];
+		
+		isTouching = NO;
+	}
+}
 
 - (void)setNeedsDisplay {
 	[super setNeedsDisplay];
 	[self.icon setNeedsDisplay];
 }
 
-//- (void)setIcon:(GNToggleIcon *)icon {
-//	@synchronized(self) {
-//        if (_icon != icon) {
-//            [_icon release];
-//            _icon = [icon retain];
-//			_icon.frame = CGRectMake(0, 0, 30, 30);
-//			[self addSubview:self.icon];
-//			[self setNeedsDisplay];
-//        }
-//    }	
-//}
+@end
 
-//- (void)setTitle:(NSString *)title {
-//	[_title release];
-//	_title = [title copy];
-//	[self setNeedsDisplay];
-//}
 
-- (void)drawContentView:(CGRect)r {
-	CGContextRef context = UIGraphicsGetCurrentContext();
+////////////////////////////////////////////////////////////
+
+@implementation GNToggleItemTableViewCell
+
+NSString *const GNToggleItemDidToggle = @"GNToggleItemDidToggle";
+
+@synthesize item=_item;
+
++ (GNToggleItemTableViewCell *)cellForItem:(GNToggleItem *)item {
+	return [[[GNToggleItemTableViewCell alloc] initWithItem:item] autorelease];
+}
+
+- (id)initWithItem:(GNToggleItem *)item {
+	if (self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GNToggleCell"]) {
+		self.contentMode = UIViewContentModeRedraw;
+		self.showsReorderControl = YES;
+		
+		self.item = item;
+
+		cellContentView = [[GNToggleCellContentView alloc] initWithFrame:CGRectInset(self.contentView.bounds, 0.0, 1.0) cell:self];		
+        cellContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        cellContentView.contentMode = UIViewContentModeRedraw;
+        [self.contentView addSubview:cellContentView];
+	}
+	return self;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
 	
-	UIColor *backgroundColor = [UIColor clearColor];
-	UIColor *textColor = [UIColor whiteColor];
+    [UIView setAnimationsEnabled:NO];
+    CGSize contentSize = cellContentView.bounds.size;
+    cellContentView.contentStretch = CGRectMake(225.0 / contentSize.width, 0.0, (contentSize.width - 260.0) / contentSize.width, 1.0);
+    [UIView setAnimationsEnabled:YES];
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    cellContentView.backgroundColor = backgroundColor;
+}
+
+- (void)setNeedsDisplay {
+	[super setNeedsDisplay];
+	[cellContentView setNeedsDisplay];
+}
+
+- (void)dealloc {
+	[cellContentView release];
 	
-//	if(self.selected)
-//	{
-//		backgroundColor = [UIColor clearColor];
-//		textColor = [UIColor whiteColor];
-//	}
-	
-	[backgroundColor set];
-	CGContextFillRect(context, r);
-	
-	CGPoint p;
-	p.x = 40;
-	p.y = 9;
-	
-	[textColor set];
-	[_title drawAtPoint:p withFont:font];
+	[super dealloc];
 }
 
 @end
@@ -232,7 +290,7 @@ static UIFont *font = nil;
 		self.item = item;
 		
 		self.image = self.item.image;
-		self.backgroundColor = [UIColor clearColor];
+		self.backgroundColor = [UIColor redColor];
 		self.contentMode = UIViewContentModeRedraw;
 		//self.item.active = NO;
 		

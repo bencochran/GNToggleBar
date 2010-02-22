@@ -202,6 +202,7 @@
 				GCC_PREFIX_HEADER = GNToggleBar_Prefix.pch;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = GNToggleBar;
+				SDKROOT = iphoneos3.1;
 			};
 			name = Debug;
 		};
@@ -216,6 +217,7 @@
 				GCC_PREFIX_HEADER = GNToggleBar_Prefix.pch;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = GNToggleBar;
+				SDKROOT = iphoneos3.1;
 			};
 			name = Release;
 		};

@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "GNGlobal.h"
-#import "ABTableViewCell.h"
 
 @class GNToggleBar, GNToggleIcon, GNQuickToggleItemView,
 	   GNToggleItemTableViewCell;
@@ -22,10 +21,11 @@
 	GNToggleIcon *_icon;
 	NSString *_title;
 	UIImage *_image;
+
 }
 
-@property (nonatomic, retain) GNQuickToggleItemView *quickView;
-@property (nonatomic, assign) GNToggleItemTableViewCell *tableCell;
+@property (nonatomic, readonly) GNQuickToggleItemView *quickView;
+@property (nonatomic, retain) IBOutlet GNToggleItemTableViewCell *tableCell;
 @property (nonatomic, readonly) GNToggleIcon *icon;
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) UIImage *image;
@@ -56,17 +56,23 @@
 
 ////////////////////////////////////////////////////////////
 
-@interface GNToggleItemTableViewCell : ABTableViewCell {
-	GNToggleIcon *_icon;
-	NSString *_title;
+extern NSString *const GNToggleItemDidToggle;
+
+@interface GNToggleItemTableViewCell : UITableViewCell {
 	GNToggleItem *_item;
+	UIView *cellContentView;
+//	GNToggleIcon *_icon;
+//	UILabel *_label;
 }
 
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, retain) GNToggleIcon *icon;
 @property (nonatomic, assign) GNToggleItem *item;
+//@property (nonatomic, retain) GNToggleIcon *icon;
+//@property (nonatomic, retain) UILabel *label;
+
++ (GNToggleItemTableViewCell *)cellForItem:(GNToggleItem *)item;
 
 @end
+
 
 ////////////////////////////////////////////////////////////
 

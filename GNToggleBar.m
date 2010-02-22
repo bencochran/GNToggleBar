@@ -31,6 +31,13 @@
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		self.alpha = 0.8;
 		
+		UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 57, frame.size.width, 0)];
+		bgView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+		bgView.backgroundColor = [UIColor blackColor];
+		[self addSubview:bgView];
+		[bgView release];
+		
+		
 		self.downFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 57, frame.size.width, 57);
 		self.upFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 275, frame.size.width, 275);
 		self.minimizedFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 10, frame.size.width, 10);
@@ -274,25 +281,39 @@
 				self.state = GNToggleBarStateUp;
 				break;
 		}
+	} else {
+		for (GNToggleItem *item in self.quickToggleItems) {
+			if (view = [item.quickView hitTest:[touch locationInView:item.quickView] withEvent:event]) {
+				[view touchesEnded:touches withEvent:event];
+			}
+		}
 	}
 }
 
-- (void) touchesCanceled:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
-	if (touch.view == self.arrow) {
+	UIView *view;
+	if (dragging) {
+		dragging = NO;
+		self.alpha = 0.8;
 		// Jump back to previous state (up/down/minimized)
+	} else {
+		for (GNToggleItem *item in self.quickToggleItems) {
+			if (view = [item.quickView hitTest:[touch locationInView:item.quickView] withEvent:event]) {
+				[view touchesCancelled:touches withEvent:event];
+			}
+		}
 	}
 }
 
 #pragma mark Table View Delegate
 
-//- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//	// we don't want any of the cells to be selected
-//	return nil;
-//}
-
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {	
+	return NO;
 }
 
 #pragma mark Table View Data Source
@@ -306,33 +327,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NSLog(@"self.toggleItems: %@", self.toggleItems);
-	NSLog(@"self.quickToggleItems: %@", self.quickToggleItems);
-	NSLog(@"number of rows: %i", [self.toggleItems count]);
 	return [self.toggleItems count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	static NSString *CellIdentifier = @"Cell";
-    
-    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	GNToggleItemTableViewCell *cell = (GNToggleItemTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	if (cell == nil) {
-        cell = [[[GNToggleItemTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-	GNToggleItem *item = [self.toggleItems objectAtIndex:indexPath.row];
-		
-//	cell.textLabel.backgroundColor = [UIColor clearColor];
-//	cell.textLabel.textColor = [UIColor whiteColor];
-//	cell.textLabel.text = item.title;
-//	cell.imageView.image = item.icon.image;
-	cell.item = item;
-//	cell.title = item.title;
-//	cell.icon = item.icon;
-	
-	return cell;
+	return [[self.toggleItems objectAtIndex:indexPath.row] tableCell];
 }
 
 @end
@@ -440,7 +439,6 @@
 }
 
 - (void) drawRect:(CGRect)rect {
-	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGFloat alignStroke;
 	CGMutablePathRef path;

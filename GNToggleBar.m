@@ -32,14 +32,14 @@
 		self.alpha = 0.8;
 		
 		UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 57, frame.size.width, 0)];
-		bgView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+		bgView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 		bgView.backgroundColor = [UIColor blackColor];
 		[self addSubview:bgView];
 		[bgView release];
 		
 		
 		self.downFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 57, frame.size.width, 57);
-		self.upFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 275, frame.size.width, 275);
+		self.upFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 260, frame.size.width, 260);
 		self.minimizedFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 10, frame.size.width, 10);
 		
 		self.state = GNToggleBarStateDown;
@@ -138,7 +138,7 @@
 
 - (void)layoutSubviews {
 	self.downFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 57, self.frame.size.width, 57);
-	self.upFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 275, self.frame.size.width, 275);
+	self.upFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 260, self.frame.size.width, 260);
 	self.minimizedFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 10, self.frame.size.width, 10);
 	
 	

@@ -290,9 +290,8 @@ NSString *const GNToggleItemDidToggle = @"GNToggleItemDidToggle";
 		self.item = item;
 		
 		self.image = self.item.image;
-		self.backgroundColor = [UIColor redColor];
+		self.backgroundColor = [UIColor clearColor];
 		self.contentMode = UIViewContentModeRedraw;
-		//self.item.active = NO;
 		
 		// Make an UIImageView of our image and use its layer
 		// as this layer's mask. There's probably a less resource

@@ -41,6 +41,7 @@
 	GNToggleIcon *_icon;
 	UILabel *_label;
 	GNToggleItem *_item;
+	BOOL isTouching;
 }
 
 @property (nonatomic, retain) UILabel *label;

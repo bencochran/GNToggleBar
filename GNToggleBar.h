@@ -25,6 +25,10 @@
 	CGRect _minimizedFrame;
 	
 	GNToggleItem *_item;
+	
+	CGFloat touchYOffset;
+	CGPoint touchStartPoint;
+	BOOL dragging;
 }
 
 @property (nonatomic, retain) NSMutableArray *toggleItems;
@@ -38,7 +42,6 @@
 @property (nonatomic) CGRect downFrame;
 @property (nonatomic) CGRect minimizedFrame;
 @property (nonatomic, retain) GNToggleItem* item;
-
 
 - (id)initWithFrame:(CGRect)frame;
 

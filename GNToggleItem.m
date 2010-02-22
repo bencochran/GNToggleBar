@@ -113,13 +113,20 @@
 	self.label.frame = labelFrame;
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	isTouching = YES;
+}
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	// Simply toggle our active state and redraw
-	self.item.active = !self.item.active;
-//	[self.icon setNeedsDisplay];
-	
-	// Send the TouchUpInside and ValueChanged event
-	[self sendActionsForControlEvents:UIControlEventTouchUpInside | UIControlEventValueChanged];
+	if (isTouching) {
+		// Simply toggle our active state and redraw
+		self.item.active = !self.item.active;
+		
+		// Send the TouchUpInside and ValueChanged event
+		[self sendActionsForControlEvents:UIControlEventTouchUpInside | UIControlEventValueChanged];
+		
+		isTouching = NO;
+	}
 }
 
 - (void)dealloc {

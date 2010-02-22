@@ -26,7 +26,7 @@
     if (self = [super initWithFrame:frame]) {
 		self.toggleItems = [NSMutableArray array];
 		self.quickToggleItems = [[[NSMutableArray alloc] initWithCapacity:5] autorelease];
-		_activeToggleItems = [[[NSMutableArray alloc] init] autorelease];
+		_activeToggleItems = [[NSMutableArray alloc] init];
 		self.backgroundColor = [UIColor clearColor];
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		self.alpha = 0.8;
@@ -51,7 +51,7 @@
 			tableFrame.size.height = 275;
 		}		
 		self.table = [[[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain] autorelease];
-		self.table.backgroundColor = [UIColor blackColor];
+		self.table.backgroundColor = [UIColor clearColor];
 		self.table.separatorColor = [UIColor colorWithRed:0.549 green:0.549 blue:0.549 alpha:1.0];
 		
 		self.table.delegate = self;
@@ -115,18 +115,18 @@
 	switch (state) {
 		case GNToggleBarStateUp:
 			self.frame = self.upFrame;
+			[self.arrow setPointingUp:NO];
 			break;
 		case GNToggleBarStateMinimized:
 			self.frame = self.minimizedFrame;
+			[self.arrow setPointingUp:YES];
 			break;
 		case GNToggleBarStateDown:
 		default:
 			self.frame = self.downFrame;
+			[self.arrow setPointingUp:YES];
 			break;
 	}
-}
-
-- (void)drawRect:(CGRect)rect {
 }
 
 - (void)layoutSubviews {
@@ -184,32 +184,72 @@
 	return CGRectContainsPoint(self.bounds, point) || CGRectContainsPoint(touchableArrow, point);
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+	UIView *tableSubView = [self.table hitTest:[self convertPoint:point toView:self.table] withEvent:event];
+	if (tableSubView) {
+		return tableSubView;
+	} else {
+		return [self pointInside:point withEvent:event] ? self : nil;
+	}
+}
+
+- (void)startDragging:(NSSet *)touches {
+	UITouch *touch = [touches anyObject];
+	UIView *view;
+	if ([touch phase] == UITouchPhaseStationary) {
+		CGPoint locationInSuperview = [touch locationInView:[self superview]];
+		if (touchStartPoint.y - locationInSuperview.y == 0 && touchStartPoint.x - locationInSuperview.x == 0) {
+			dragging = YES;
+			self.alpha = 0.7;
+			
+			for (GNToggleItem *item in self.quickToggleItems) {
+				if (view = [item.quickView hitTest:[touch locationInView:item.quickView] withEvent:nil]) {
+					[view touchesCancelled:touches withEvent:nil];
+				}
+			}
+		}
+	}	
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	UITouch *touch = [touches anyObject];
+	UIView *view;
+	if ([self.arrow hitTest:[touch locationInView:self.arrow] withEvent:event]) {
+		dragging = NO;
+		touchYOffset = [touch locationInView:self].y;
+		touchStartPoint = [touch locationInView:[self superview]];
+		[self performSelector:@selector(startDragging:) withObject:touches afterDelay:0.15];
+	}
+	for (GNToggleItem *item in self.quickToggleItems) {
+		if (view = [item.quickView hitTest:[touch locationInView:item.quickView] withEvent:event]) {
+			[view touchesBegan:touches withEvent:event];
+		}
+	}
+}
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
-	if (touch.view == self.arrow) {
-		CGPoint location = [touch locationInView:self];
-		CGPoint previousLocation = [touch previousLocationInView:self];
-		float diff = (float)(location.y - previousLocation.y);
-		
-		if (self.frame.origin.y + diff < self.upFrame.origin.y) {
-			diff /= 2;
-		}
-		
-		CGRect newFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
+	if (dragging) {
+		CGFloat newY = [touch locationInView:[self superview]].y - touchYOffset;
+		CGFloat newHeight = [[self superview] bounds].size.height - newY;
+		CGRect newFrame = CGRectMake(self.frame.origin.x, newY, self.frame.size.width, newHeight);
 
-		if (newFrame.size.height > self.minimizedFrame.size.height) {
+		if (newHeight > self.minimizedFrame.size.height) {
 			self.frame = newFrame;
 		}
-	}
+	}	
 }
 
 
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
-	if (touch.view == self.arrow) {
+	UIView *view;
+	if (dragging) {
+		self.alpha = 0.8;
+		dragging = NO;
+		
 		CGPoint location = [touch locationInView:self.superview];
-
+		
 		switch (self.state) {
 			case GNToggleBarStateUp:
 				if (location.y > self.upFrame.origin.y + 80) {

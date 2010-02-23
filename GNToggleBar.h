@@ -28,6 +28,8 @@
 	
 	CGFloat touchYOffset;
 	CGPoint touchStartPoint;
+	NSTimeInterval previousTouchTimestamp;
+	
 	BOOL dragging;
 }
 

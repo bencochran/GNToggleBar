@@ -37,6 +37,7 @@
 		[self addSubview:bgView];
 		[bgView release];
 		
+		previousTouchTimestamp = 0;
 		
 		self.downFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 57, frame.size.width, 57);
 		self.upFrame = CGRectMake(frame.origin.x, frame.origin.y + frame.size.height - 260, frame.size.width, 260);
@@ -200,20 +201,25 @@
 	}
 }
 
-- (void)startDragging:(NSSet *)touches {
+- (void)startDraggingWithTouches:(NSSet *)touches {
+	dragging = YES;
+	self.alpha = 0.7;
+	
 	UITouch *touch = [touches anyObject];
 	UIView *view;
-	if ([touch phase] == UITouchPhaseStationary) {
+	for (GNToggleItem *item in self.quickToggleItems) {
+		if (view = [item.quickView hitTest:[touch locationInView:item.quickView] withEvent:nil]) {
+			[view touchesCancelled:touches withEvent:nil];
+		}
+	}
+}
+
+- (void)checkStartDraggingWithTouches:(NSSet *)touches {
+	UITouch *touch = [touches anyObject];
+	if ([touch phase] != UITouchPhaseEnded && [touch phase] != UITouchPhaseCancelled) {
 		CGPoint locationInSuperview = [touch locationInView:[self superview]];
 		if (touchStartPoint.y - locationInSuperview.y == 0 && touchStartPoint.x - locationInSuperview.x == 0) {
-			dragging = YES;
-			self.alpha = 0.7;
-			
-			for (GNToggleItem *item in self.quickToggleItems) {
-				if (view = [item.quickView hitTest:[touch locationInView:item.quickView] withEvent:nil]) {
-					[view touchesCancelled:touches withEvent:nil];
-				}
-			}
+			[self startDraggingWithTouches:touches];
 		}
 	}	
 }
@@ -221,11 +227,13 @@
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
 	UIView *view;
+	previousTouchTimestamp = [touch timestamp];
+	touchYOffset = [touch locationInView:self].y;
+	touchStartPoint = [touch locationInView:[self superview]];
+	
 	if ([self.arrow hitTest:[touch locationInView:self.arrow] withEvent:event]) {
 		dragging = NO;
-		touchYOffset = [touch locationInView:self].y;
-		touchStartPoint = [touch locationInView:[self superview]];
-		[self performSelector:@selector(startDragging:) withObject:touches afterDelay:0.15];
+		[self performSelector:@selector(checkStartDraggingWithTouches:) withObject:touches afterDelay:0.15];
 	}
 	for (GNToggleItem *item in self.quickToggleItems) {
 		if (view = [item.quickView hitTest:[touch locationInView:item.quickView] withEvent:event]) {
@@ -236,6 +244,14 @@
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
+	if (!dragging && [self.arrow hitTest:[touch locationInView:self.arrow] withEvent:event]) {
+		CGFloat locationDelta = [touch locationInView:[self window]].y  - [touch previousLocationInView:[self window]].y;
+		float velocity = locationDelta / ([touch timestamp] - previousTouchTimestamp);
+		if (fabs(velocity) > 8.0) {
+			[self startDraggingWithTouches:touches];
+		}
+//		dragging = YES;
+	}
 	if (dragging) {
 		CGFloat newY = [touch locationInView:[self superview]].y - touchYOffset;
 		CGFloat newHeight = [[self superview] bounds].size.height - newY;
@@ -244,7 +260,9 @@
 		if (newHeight > self.minimizedFrame.size.height) {
 			self.frame = newFrame;
 		}
-	}	
+	}
+	
+	previousTouchTimestamp = [touch timestamp];
 }
 
 
@@ -288,10 +306,15 @@
 			}
 		}
 	}
+	
+	previousTouchTimestamp = 0;
+	touchYOffset = 0;
+	touchStartPoint = CGPointZero;
 }
 
 - (void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
+	previousTouchTimestamp = 0;
 	UIView *view;
 	if (dragging) {
 		dragging = NO;
@@ -304,6 +327,10 @@
 			}
 		}
 	}
+	
+	previousTouchTimestamp = 0;
+	touchYOffset = 0;
+	touchStartPoint = CGPointZero;
 }
 
 #pragma mark Table View Delegate

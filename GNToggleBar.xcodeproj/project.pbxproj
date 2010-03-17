@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		AA747D9F0F9514B9006C5449 /* GNToggleBar_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* GNToggleBar_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
-		B800AF4610D0CD9E00C77A31 /* ABTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B800AF4410D0CD9E00C77A31 /* ABTableViewCell.h */; };
-		B800AF4710D0CD9E00C77A31 /* ABTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B800AF4510D0CD9E00C77A31 /* ABTableViewCell.m */; };
 		B818838F108EB78A00749A6D /* GNToggleBar.h in Headers */ = {isa = PBXBuildFile; fileRef = B818838D108EB78A00749A6D /* GNToggleBar.h */; };
 		B8188390108EB78A00749A6D /* GNToggleBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B818838E108EB78A00749A6D /* GNToggleBar.m */; };
 		B81883B4108EBAB300749A6D /* GNToggleItem.h in Headers */ = {isa = PBXBuildFile; fileRef = B81883B2108EBAB300749A6D /* GNToggleItem.h */; };
@@ -26,17 +24,15 @@
 /* Begin PBXFileReference section */
 		AA747D9E0F9514B9006C5449 /* GNToggleBar_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNToggleBar_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		B800AF4410D0CD9E00C77A31 /* ABTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABTableViewCell.h; sourceTree = "<group>"; };
-		B800AF4510D0CD9E00C77A31 /* ABTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABTableViewCell.m; sourceTree = "<group>"; };
-		B818838D108EB78A00749A6D /* GNToggleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNToggleBar.h; sourceTree = "<group>"; };
-		B818838E108EB78A00749A6D /* GNToggleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GNToggleBar.m; sourceTree = "<group>"; };
-		B81883B2108EBAB300749A6D /* GNToggleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNToggleItem.h; sourceTree = "<group>"; };
-		B81883B3108EBAB300749A6D /* GNToggleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GNToggleItem.m; sourceTree = "<group>"; };
+		B818838D108EB78A00749A6D /* GNToggleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GNToggleBar.h; path = GnarusToggleBar/GNToggleBar.h; sourceTree = "<group>"; };
+		B818838E108EB78A00749A6D /* GNToggleBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GNToggleBar.m; path = GnarusToggleBar/GNToggleBar.m; sourceTree = "<group>"; };
+		B81883B2108EBAB300749A6D /* GNToggleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GNToggleItem.h; path = GnarusToggleBar/GNToggleItem.h; sourceTree = "<group>"; };
+		B81883B3108EBAB300749A6D /* GNToggleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GNToggleItem.m; path = GnarusToggleBar/GNToggleItem.m; sourceTree = "<group>"; };
 		B8188407108EC63A00749A6D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B8A59AD210AA981F00EA6120 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B8E73ACD108EE564000E8CA9 /* GnarusToggleBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GnarusToggleBar.h; path = GnarusToggleBar/GnarusToggleBar.h; sourceTree = "<group>"; };
-		B8EED4D410962DAF0046E327 /* GNToggleBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNToggleBarController.h; sourceTree = "<group>"; };
-		B8EED4D510962DAF0046E327 /* GNToggleBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GNToggleBarController.m; sourceTree = "<group>"; };
+		B8EED4D410962DAF0046E327 /* GNToggleBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GNToggleBarController.h; path = GnarusToggleBar/GNToggleBarController.h; sourceTree = "<group>"; };
+		B8EED4D510962DAF0046E327 /* GNToggleBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GNToggleBarController.m; path = GnarusToggleBar/GNToggleBarController.m; sourceTree = "<group>"; };
 		B8EED537109663080046E327 /* GNGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GNGlobal.h; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libGNToggleBar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGNToggleBar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -88,8 +84,6 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				B800AF4410D0CD9E00C77A31 /* ABTableViewCell.h */,
-				B800AF4510D0CD9E00C77A31 /* ABTableViewCell.m */,
 				B81883B2108EBAB300749A6D /* GNToggleItem.h */,
 				B81883B3108EBAB300749A6D /* GNToggleItem.m */,
 				B818838D108EB78A00749A6D /* GNToggleBar.h */,
@@ -97,7 +91,6 @@
 				B8EED4D410962DAF0046E327 /* GNToggleBarController.h */,
 				B8EED4D510962DAF0046E327 /* GNToggleBarController.m */,
 				B8E73ACD108EE564000E8CA9 /* GnarusToggleBar.h */,
-				B8EED537109663080046E327 /* GNGlobal.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -105,6 +98,7 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B8EED537109663080046E327 /* GNGlobal.h */,
 				AA747D9E0F9514B9006C5449 /* GNToggleBar_Prefix.pch */,
 			);
 			name = "Other Sources";
@@ -130,7 +124,6 @@
 				B8E73ACE108EE564000E8CA9 /* GnarusToggleBar.h in Headers */,
 				B8EED4D610962DAF0046E327 /* GNToggleBarController.h in Headers */,
 				B8EED538109663080046E327 /* GNGlobal.h in Headers */,
-				B800AF4610D0CD9E00C77A31 /* ABTableViewCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +173,6 @@
 				B8188390108EB78A00749A6D /* GNToggleBar.m in Sources */,
 				B81883B5108EBAB300749A6D /* GNToggleItem.m in Sources */,
 				B8EED4D710962DAF0046E327 /* GNToggleBarController.m in Sources */,
-				B800AF4710D0CD9E00C77A31 /* ABTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
